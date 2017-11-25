@@ -1,0 +1,55 @@
+{
+  "name": "udp-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "shortid": "^2.2.8",
+    "wrtc": "0.0.62",
+    "ws": "^3.3.2"
+  },
+  "devDependencies": {
+    "babel-jest": "^21.2.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "flow-bin": "^0.59.0",
+    "husky": "^0.14.3",
+    "jest": "^21.2.1",
+    "lint-staged": "^5.0.0",
+    "mock-socket": "^7.1.0",
+    "prettier": "^1.8.2",
+    "rollup": "^0.51.8",
+    "rollup-plugin-babel": "^3.0.2",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0"
+  },
+  "scripts": {
+    "start": "node lib/server.js",
+    "build": "npm run build:client & npm run build:server",
+    "build:client": "node build/client.js",
+    "build:server": "node build/server.js",
+    "precommit": "lint-staged",
+    "prepush": "npm test",
+    "postinstall": "npm run build:server",
+    "test": "jest",
+    "test-coverage": "jest --verbose --coverage"
+  },
+  "author": "",
+  "license": "ISC",
+  "lint-staged": {
+    "*.{js,jsx,json,css}": [
+      "prettier --print-width=70 --write",
+      "git add"
+    ]
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!<rootDir>/node_modules/",
+      "!<rootDir>/test/"
+    ]
+  }
+}

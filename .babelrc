@@ -1,0 +1,30 @@
+{
+  "env": {
+    "test": {
+      "presets": [
+        "env"
+      ],
+      "plugins": [
+        "transform-flow-strip-types",
+        "transform-class-properties",
+        "transform-runtime", 
+      ]
+    },
+    "development": {
+      "presets": [
+        ["env", {
+          targets: {
+            browsers: ["last 2 versions"]
+          },
+          modules: false
+        }],
+      ],
+      "plugins": [
+        "transform-flow-strip-types",
+        "transform-class-properties",
+        ["transform-runtime", {helpers: false, polyfill: false}],
+        "external-helpers"
+      ]
+    }
+  }
+}
