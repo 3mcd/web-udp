@@ -5,13 +5,13 @@ import type { RTCDataChannel } from "wrtc";
 import type { Connection } from "..";
 
 type DataChannelOptions = {
-  dc: RTCDataChannel,
-  id: string
+  dc: RTCDataChannel
 };
 
 type DataChannelSubscriber = (data: mixed) => mixed;
 
 export default class DataChannel implements Connection {
+  _open: boolean = true;
   _dc: RTCDataChannel;
 
   get id(): string {
@@ -28,12 +28,21 @@ export default class DataChannel implements Connection {
     dc.addEventListener("message", this._onMessage);
   }
 
-  _onMessage = (e: mixed) => {
-    const { data } = e;
-    this._subscribers.forEach(subscriber => subscriber(data));
+  _onMessage = (e: MessageEvent) => {
+    this._subscribers.forEach(subscriber => subscriber(e.data));
   };
 
   send = (message: mixed) => {
+    // wrtc's RTCDataChannel.send currently will segfault if connection is
+    // closed.
+    if (
+      // Even accessing readyState causes a segfault:
+      // this._dc.readyState === "closing" ||
+      // this._dc.readyState === "closed" ||
+      !this._open
+    ) {
+      return;
+    }
     this._dc.send(message);
   };
 
@@ -47,4 +56,9 @@ export default class DataChannel implements Connection {
       1
     );
   };
+
+  close() {
+    this._open = false;
+    // this._dc.close();
+  }
 }

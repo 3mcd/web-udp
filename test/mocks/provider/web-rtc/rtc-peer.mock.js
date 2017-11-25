@@ -10,7 +10,7 @@ import type {
 import Connection from "../connection.mock";
 
 export default (options: PeerOptions): PeerInterface => {
-  const { onICE, onSDP } = options;
+  const { onClose, onICE, onSDP } = options;
 
   const mock = {
     channel: jest.fn(async (id: string) => Connection()),

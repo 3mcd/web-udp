@@ -1,8 +1,8 @@
 # udp-web
 
-udp-web is a library used to establish UDP connections in Node/browser environments. The key goal of this project to provide a simple, stable API that anyone can use to work with real-time data on the Web.
+udp-web is a library used to establish UDP connections in Node/browser environments. The key goal of this project to provide a small, stable API that anyone can use to work with real-time data on the Web.
 
-The library is currently implemented as an abstraction on top of unreliable RTCDataChannels. Since WebRTC is a dependency, a signaling server is included with the package to facilitate connections between clients. Client/server connections are available with the help of the [wrtc](https://www.npmjs.com/package/wrtc) package. Configuration includes ordered (SCTP) and unordered (UDP) channels.
+The library is currently implemented as an abstraction on top of unreliable RTCDataChannels. Since WebRTC is a dependency, a signaling server is included with the package to facilitate connections between clients. Client/server connections are available with the help of the [wrtc](https://www.npmjs.com/package/wrtc) package.
 
 This project is a WIP.
 
@@ -10,12 +10,14 @@ This project is a WIP.
 
 ### Target v1 API
 ```js
-exports(server: string | http.Server, connectionSubscriber: Connection => *): Client
-
-Client#connect(id?: string = "MASTER"): Promise<Connection>
+Client(options?: { id?: string, url?: string, onConnection?: Connection => * }): Client
+Client#connect(to?: string = "__MASTER__"): Promise<Connection>
 
 Connection#send(message: *): void
 Connection#subscribe(messageSubscriber: (message: *) => *): void
+
+// Node
+Server({ server: http.Server, onConnection: Connection => * }): Client
 ```
 
 ### Client/Server
@@ -38,13 +40,18 @@ async function main() {
 // server.js
 
 const server = require("http").createServer();
-const client = require("udp-web")(server, connection => {
-  const { send, subscribe } = connection;
-  subscribe(message => {
-    if (message === "ping") {
-      send("pong");
-    }
-  });
+const { Server } = require("udp-web");
+
+const udp = new Server({
+  server,
+  onConnection: connection => {
+    const { send, subscribe } = connection;
+    subscribe(message => {
+      if (message === "ping") {
+        send("pong");
+      }
+    });
+  }
 });
 
 server.listen(8000);
@@ -67,13 +74,16 @@ async function main() {
 ```js
 // client2.js
 
-const client = new Client("foo", connection => {
-  const { send, subscribe } = connection;
-  subscribe(message => {
-    if (message === "ping") {
-      send("pong");
-    }
-  });
+const client = new Client({
+  id: "foo",
+  onConnection: connection => {
+    const { send, subscribe } = connection;
+    subscribe(message => {
+      if (message === "ping") {
+        send("pong");
+      }
+    });
+  }
 });
 ```
 
@@ -81,7 +91,9 @@ const client = new Client("foo", connection => {
 // server.js
 
 const server = require("http").createServer();
-const client = require("udp-web")(server);
+const { Server } = require("udp-web");
+
+Server({ server });
 
 server.listen(8000);
 ```

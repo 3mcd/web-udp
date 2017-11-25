@@ -24,6 +24,7 @@ export default class WebSocketTransport implements Transport {
       this._socket.addEventListener("open", this._onOpen);
     }
     this._socket.addEventListener("message", this._onMessage);
+    this._socket.addEventListener("close", this._onClose);
   }
 
   _flush() {
@@ -33,6 +34,13 @@ export default class WebSocketTransport implements Transport {
       this._socket.send(serialize(message));
     }
   }
+
+  _onOpen = () => {
+    this._open = true;
+    this.send({
+      type: "OPEN"
+    });
+  };
 
   _onMessage = (e: Event) => {
     if (!e.data) {
@@ -46,9 +54,13 @@ export default class WebSocketTransport implements Transport {
     }
   };
 
-  _onOpen = () => {
-    this._open = true;
-    this._flush();
+  _onClose = () => {
+    const message = {
+      type: "TRANSPORT_CLOSE"
+    };
+    for (let i = 0; i < this._subscribers.length; i++) {
+      this._subscribers[i](message);
+    }
   };
 
   subscribe(handler: MessageHandler) {
@@ -76,5 +88,9 @@ export default class WebSocketTransport implements Transport {
     }
 
     this._flush();
+  }
+
+  close() {
+    this._socket.close();
   }
 }

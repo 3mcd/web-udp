@@ -26,22 +26,20 @@ const RTC_PEER_CONNECTION_OPTIONS = {
 
 export type RTCConnectionProviderOptions = {
   transport: Transport,
-  onConnection?: Connection => void
+  onConnection?: Connection => mixed
 };
 
 export default class RTCConnectionProvider
   implements ConnectionProvider {
   _peers: { [string]: RTCPeer } = {};
-
   _transport: Transport;
-
-  _onConnection: Connection => void;
+  _onPeerChannel: Connection => mixed;
 
   constructor(options: RTCConnectionProviderOptions) {
     const { transport, onConnection = connection => {} } = options;
 
     this._transport = transport;
-    this._onConnection = onConnection;
+    this._onPeerChannel = onConnection;
 
     this._transport.subscribe(this._onMessage);
   }
@@ -117,9 +115,10 @@ export default class RTCConnectionProvider
 
     const peer = new RTCPeer({
       pc: new RTCPeerConnection(RTC_PEER_CONNECTION_OPTIONS),
-      onChannel: channel => this._onConnection(channel),
-      onSDP: sdp => this._onSDP(sdp, id),
-      onICE: ice => this._onICE(ice, id)
+      onChannel: this._onPeerChannel,
+      onClose: () => this._onPeerClose(id),
+      onSDP: sdp => this._onPeerSDP(sdp, id),
+      onICE: ice => this._onPeerICE(ice, id)
     });
 
     this._peers[id] = peer;
@@ -127,7 +126,7 @@ export default class RTCConnectionProvider
     return peer;
   }
 
-  _onSDP = (sdp: RTCSessionDescription, pid: string) => {
+  _onPeerSDP = (sdp: RTCSessionDescription, pid: string) => {
     const payload = { sdp };
 
     let message;
@@ -149,7 +148,7 @@ export default class RTCConnectionProvider
     this._transport.send(message);
   };
 
-  _onICE = (ice: RTCIceCandidate, pid: string) => {
+  _onPeerICE = (ice: RTCIceCandidate, pid: string) => {
     this._transport.send({
       type: "ICE_CLIENT",
       pid,
@@ -158,4 +157,18 @@ export default class RTCConnectionProvider
       }
     });
   };
+
+  _onPeerClose = (id: string) => {
+    delete this._peers[id];
+  };
+
+  close(id: string) {
+    const peer = this._peers[id];
+
+    if (!peer) {
+      return;
+    }
+
+    peer.close();
+  }
 }

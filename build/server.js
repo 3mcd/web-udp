@@ -21,10 +21,8 @@ const output = {
   format: "cjs"
 };
 
-async function build() {
-  const bundle = await rollup.rollup(input);
-
-  await bundle.write(output);
+function build() {
+  return rollup.rollup(input).then(bundle => bundle.write(output));
 }
 
 build();

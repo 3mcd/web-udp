@@ -50,10 +50,20 @@ type IceClient = {
   }
 };
 
+type Open = {
+  type: "OPEN"
+};
+
+type TransportClose = {
+  type: "TRANSPORT_CLOSE"
+};
+
 export type Message =
+  | Open
   | OfferClient
   | Offer
   | AnswerClient
   | Answer
   | IceClient
-  | Ice;
+  | Ice
+  | TransportClose;

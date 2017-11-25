@@ -1,13 +1,13 @@
 {
-  "name": "web-udp",
-  "version": "0.0.0",
-  "description": "SCTP data channels in the browser",
-  "main": "index.js",
+  "author": "",
+  "browser": "dist/client.js",
   "dependencies": {
     "shortid": "^2.2.8",
-    "wrtc": "0.0.62",
+    "wrtc":
+      "git+https://github.com/js-platform/node-webrtc.git#develop",
     "ws": "^3.3.2"
   },
+  "description": "SCTP data channels in the browser",
   "devDependencies": {
     "babel-jest": "^21.2.0",
     "babel-plugin-external-helpers": "^6.22.0",
@@ -26,30 +26,32 @@
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.0"
   },
-  "scripts": {
-    "start": "node lib/server.js",
-    "build": "npm run build:client & npm run build:server",
-    "build:client": "node build/client.js",
-    "build:server": "node build/server.js",
-    "precommit": "lint-staged",
-    "prepush": "npm test",
-    "postinstall": "npm run build:server",
-    "test": "jest",
-    "test-coverage": "jest --verbose --coverage"
+  "jest": {
+    "collectCoverageFrom": [
+      "!<rootDir>/node_modules/",
+      "!<rootDir>/test/",
+      "src/**/*.{js,jsx}"
+    ]
   },
-  "author": "",
   "license": "ISC",
   "lint-staged": {
     "*.{js,jsx,json,css}": [
-      "prettier --print-width=70 --write",
-      "git add"
+      "git add",
+      "prettier --print-width=70 --write"
     ]
   },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx}",
-      "!<rootDir>/node_modules/",
-      "!<rootDir>/test/"
-    ]
-  }
+  "main": "lib/server.js",
+  "name": "web-udp",
+  "scripts": {
+    "build": "npm run build:client & npm run build:server",
+    "build:client": "node build/client.js",
+    "build:server": "node build/server.js",
+    "postinstall": "npm run build:server",
+    "precommit": "lint-staged",
+    "prepush": "npm test",
+    "start": "node examples/server.js",
+    "test": "jest",
+    "test-coverage": "jest --verbose --coverage"
+  },
+  "version": "0.0.0"
 }

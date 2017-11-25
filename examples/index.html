@@ -5,16 +5,15 @@
   <body>
     <script type="text/javascript" src="../dist/client.js"></script>
     <script type="text/javascript">
-      const client = Udp.client("ws://localhost:4000");
+      const client = new Udp.Client({ url: "localhost:4000" });
 
-      async function main() {
-        const { send, subscribe } = await client.connect();
-        window.send = send;
-        send("PING");
-        subscribe(console.log);
-      }
-
-      main();
+      client.connect().then(
+        ({ send, subscribe }) => {
+          send("PING");
+          send("PULL");
+          subscribe(console.log);
+        }
+      );
     </script>
   </body>
 </html>

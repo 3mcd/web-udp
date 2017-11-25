@@ -17,6 +17,8 @@ export default class Broker {
 
   _onMessage = (message: Message, src: string) => {
     switch (message.type) {
+      case "OPEN":
+        break;
       case "OFFER_CLIENT": {
         const { payload, pid } = message;
 
@@ -53,7 +55,7 @@ export default class Broker {
         const { payload, pid } = message;
 
         if (!this._transports[pid]) {
-          throw new Error(`Client ${pid} not found.`);
+          throw new Error(`Client ${pid} not found`);
         }
 
         this._transports[pid].send({
@@ -65,8 +67,12 @@ export default class Broker {
         });
         break;
       }
+      case "TRANSPORT_CLOSE": {
+        delete this._transports[src];
+        break;
+      }
       default:
-        throw new Error(`Invalid message type ${message.type}.`);
+        throw new Error(`Invalid message type ${message.type}`);
     }
   };
 }

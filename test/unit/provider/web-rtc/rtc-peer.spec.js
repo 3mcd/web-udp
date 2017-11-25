@@ -15,6 +15,7 @@ import {
 
 describe("RTCPeer", () => {
   let onChannel;
+  let onClose;
   let onICE;
   let onSDP;
   let pc;
@@ -22,12 +23,14 @@ describe("RTCPeer", () => {
 
   beforeEach(() => {
     onChannel = jest.fn();
+    onClose = jest.fn();
     onICE = jest.fn();
     onSDP = jest.fn();
     pc = new RTCPeerConnection();
     peer = new RTCPeer({
       pc,
       onChannel,
+      onClose,
       onICE,
       onSDP
     });

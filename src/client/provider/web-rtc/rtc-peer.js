@@ -12,8 +12,9 @@ import type { Connection } from "..";
 
 import DataChannel from "./data-channel";
 
+// Enforce UDP-like SCTP messaging.
 const DATA_CHANNEL_OPTIONS = {
-  ordered: true,
+  ordered: false,
   reliable: false
 };
 
@@ -26,6 +27,7 @@ export interface PeerInterface {
 }
 
 export type PeerOptions = {
+  onClose: (...mixed[]) => mixed,
   onChannel: DataChannel => mixed,
   onICE: RTCIceCandidate => mixed,
   onSDP: RTCSessionDescription => mixed,
@@ -35,38 +37,38 @@ export type PeerOptions = {
 export default class RTCPeer implements PeerInterface {
   _channels: { [string]: DataChannel } = {};
 
-  _initiator: boolean = false;
-
   _pc: RTCPeerConnection;
 
+  _onClose: (...mixed[]) => mixed;
   _onChannel: DataChannel => mixed;
-
-  _onICE: RTCIceCandidate => void;
-
-  _onSDP: RTCSessionDescription => void;
+  _onICE: RTCIceCandidate => mixed;
+  _onSDP: RTCSessionDescription => mixed;
 
   constructor(options: PeerOptions) {
-    const { onChannel, onICE, onSDP, pc } = options;
+    const { onChannel, onClose, onICE, onSDP, pc } = options;
 
     this._onICE = onICE;
     this._onSDP = onSDP;
     this._onChannel = onChannel;
+    this._onClose = onClose;
     this._pc = pc;
     this._pc.addEventListener("datachannel", this._onDataChannel);
     this._pc.addEventListener("icecandidate", this._onIceCandidate);
+    this._pc.addEventListener(
+      "connectionstatechange",
+      this._onConnectionStateChange
+    );
   }
 
   channel(id: string): Promise<Connection> {
     // Create a RTCDataChannel with the id as the label.
     const dc = this._pc.createDataChannel(id, DATA_CHANNEL_OPTIONS);
 
-    return new Promise(r => {
+    return new Promise(resolve => {
       const handle = () => {
         const channel = new DataChannel({ dc });
-        this._channels[id] = channel;
-        r(channel);
+        resolve(channel);
         this._onChannel(channel);
-        dc.removeEventListener("open", handle);
       };
       dc.addEventListener("open", handle);
     });
@@ -97,6 +99,7 @@ export default class RTCPeer implements PeerInterface {
 
   _onDataChannel = (e: RTCDataChannelEvent) => {
     const { channel: dc } = e;
+
     let channel = this._channels[dc.label];
 
     if (channel) {
@@ -106,6 +109,20 @@ export default class RTCPeer implements PeerInterface {
     channel = this._channels[dc.label] = new DataChannel({ dc });
 
     this._onChannel(channel);
+  };
+
+  _onConnectionStateChange = () => {
+    const { connectionState } = this._pc;
+
+    switch (connectionState) {
+      case "disconnected":
+      case "failed":
+      case "closed":
+        this._onClose();
+        break;
+      default:
+        break;
+    }
   };
 
   /**
@@ -120,5 +137,12 @@ export default class RTCPeer implements PeerInterface {
       return;
     }
     this._pc.addIceCandidate(ice);
+  }
+
+  close() {
+    this._pc.close();
+    for (let id in this._channels) {
+      this._channels[id].close();
+    }
   }
 }
