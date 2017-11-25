@@ -1,8 +1,8 @@
 # udp-web
 
-udp-web is a library used to establish simple UDP connections in Node/browser environments. The key goal of this project to provide a simple, stable API that anyone can use to get up and running with UDP on the Web.
+udp-web is a library used to establish UDP connections in Node/browser environments. The key goal of this project to provide a simple, stable API that anyone can use to work with real-time data on the Web.
 
-The library is currently implemented as simple abstraction on top of unreliable RTCDataChannels. Since WebRTC is a dependency, a signaling server is included with the package to facilitate connections between clients. Client/server connections are available with the help of the Node [wrtc](https://www.npmjs.com/package/wrtc) module. Configuration includes ordered (SCTP) and unordered (UDP) channels.
+The library is currently implemented as an abstraction on top of unreliable RTCDataChannels. Since WebRTC is a dependency, a signaling server is included with the package to facilitate connections between clients. Client/server connections are available with the help of the [wrtc](https://www.npmjs.com/package/wrtc) package. Configuration includes ordered (SCTP) and unordered (UDP) channels.
 
 This project is a WIP.
 
@@ -25,7 +25,7 @@ Connection#subscribe(messageSubscriber: (message: *) => *): void
 
 import { Client } from "udp-web";
 
-function* main() {
+async function main() {
   const client = new Client();
   const { send, subscribe } = await client.connect();
 
@@ -55,7 +55,7 @@ server.listen(8000);
 ```js
 // client1.js
 
-function* main() {
+async function main() {
   const client = new Client();
   const { send, subscribe } = await client.connect("foo");
 
