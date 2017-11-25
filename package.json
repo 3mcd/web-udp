@@ -1,7 +1,7 @@
 {
-  "name": "udp-web",
-  "version": "1.0.0",
-  "description": "",
+  "name": "web-udp",
+  "version": "0.0.0",
+  "description": "SCTP data channels in the browser",
   "main": "index.js",
   "dependencies": {
     "shortid": "^2.2.8",
