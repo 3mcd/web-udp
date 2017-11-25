@@ -9,19 +9,20 @@ import Client from "./client";
 
 const defaultUrl = `ws://${location.host}:${location.port}`;
 
-export default function(
-  url: string = defaultUrl,
-  onConnection: Connection => mixed
-) {
-  const ws = new WebSocket(url);
-  const transport = new WebSocketTransport(ws);
-  const provider = new RTCConnectionProvider({
-    transport,
-    onConnection
-  });
-  const client = new Client({
-    provider
-  });
+export default {
+  client: (
+    url: string = defaultUrl,
+    onConnection?: Connection => mixed
+  ) => {
+    const ws = new WebSocket(url);
+    const transport = new WebSocketTransport(ws);
+    const provider = new RTCConnectionProvider({
+      transport,
+      onConnection
+    });
 
-  return client;
-}
+    return new Client({
+      provider
+    });
+  }
+};

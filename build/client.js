@@ -19,7 +19,7 @@ const input = {
 const output = {
   file: "dist/client.js",
   format: "umd",
-  name: "UDP",
+  name: "Udp",
   sourceMap: true
 };
 

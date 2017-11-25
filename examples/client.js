@@ -1,12 +1,10 @@
-const client = UDP("ws://localhost:4000", connection => {
-  const { subscribe, send } = connection;
+const client = Udp.client("ws://localhost:4000");
+
+async function main() {
+  const { send, subscribe } = await client.connect();
   window.send = send;
   send("PING");
   subscribe(console.log);
-});
-
-async function main() {
-  const master = await client.connect();
 }
 
 main();

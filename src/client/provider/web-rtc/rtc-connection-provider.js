@@ -26,7 +26,7 @@ const RTC_PEER_CONNECTION_OPTIONS = {
 
 export type RTCConnectionProviderOptions = {
   transport: Transport,
-  onConnection: Connection => void
+  onConnection?: Connection => void
 };
 
 export default class RTCConnectionProvider
@@ -38,7 +38,7 @@ export default class RTCConnectionProvider
   _onConnection: Connection => void;
 
   constructor(options: RTCConnectionProviderOptions) {
-    const { transport, onConnection } = options;
+    const { transport, onConnection = connection => {} } = options;
 
     this._transport = transport;
     this._onConnection = onConnection;

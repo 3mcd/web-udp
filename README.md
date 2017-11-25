@@ -10,10 +10,9 @@ This project is a WIP.
 
 ### Target v1 API
 ```js
-exports(server: http.Server, connectionSubscriber: Connection => *): Client
+exports(server: string | http.Server, connectionSubscriber: Connection => *): Client
 
-Client(url?: string, id?: string, connectionSubscriber: Connection => *): Client
-Client#connect(id?: string): Promise<Connection>
+Client#connect(id?: string = "MASTER"): Promise<Connection>
 
 Connection#send(message: *): void
 Connection#subscribe(messageSubscriber: (message: *) => *): void
