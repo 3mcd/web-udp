@@ -45,7 +45,6 @@
     "build": "npm run build:client & npm run build:server",
     "build:client": "node build/client.js",
     "build:server": "node build/server.js",
-    "postinstall": "npm run build:server",
     "precommit": "lint-staged",
     "prepush": "npm test",
     "prepublish": "npm run build",
@@ -53,5 +52,5 @@
     "test": "jest",
     "test-coverage": "jest --verbose --coverage"
   },
-  "version": "0.0.1"
+  "version": "0.0.2"
 }
