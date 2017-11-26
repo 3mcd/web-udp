@@ -48,9 +48,10 @@
     "postinstall": "npm run build:server",
     "precommit": "lint-staged",
     "prepush": "npm test",
+    "prepublish": "npm run build",
     "start": "node examples/server.js",
     "test": "jest",
     "test-coverage": "jest --verbose --coverage"
   },
-  "version": "0.0.0"
+  "version": "0.0.1"
 }
