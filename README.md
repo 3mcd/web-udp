@@ -10,14 +10,18 @@ This project is a WIP.
 
 ### Target v1 API
 ```js
-Client(options?: { id?: string, url?: string, onConnection?: Connection => * }): Client
+Client(options?: { url?: string, onConnection?: Connection => * })
 Client#connect(to?: string = "__MASTER__"): Promise<Connection>
+Client#route(): Promise<string>
 
 Connection#send(message: *): void
 Connection#subscribe(messageSubscriber: (message: *) => *): void
+Connection#unsubscribe(messageSubscriber: (message: *) => *): void
+Connection#close(): void
 
 // Node
-Server({ server: http.Server, onConnection: Connection => * }): Client
+Server({ server: http.Server, onConnection: Connection => * })
+Server#client(connectionSubscriber: Connection => *): Client
 ```
 
 ### Client/Server
@@ -60,31 +64,20 @@ server.listen(8000);
 ### P2P
 
 ```js
-// client1.js
+// client.js
 
 async function main() {
-  const client = new Client();
-  const { send, subscribe } = await client.connect("foo");
+  const left = new Client({
+    onConnection: ({ subscribe }) => {
+      subscribe(console.log);
+    }
+  });
+  const right = new Client();
+  const route = await left.route();
+  const connection = await right.connect(route);
 
-  send("ping");
-  subscribe(console.log);
+  connection.send("HELLO");
 }
-```
-
-```js
-// client2.js
-
-const client = new Client({
-  id: "foo",
-  onConnection: connection => {
-    const { send, subscribe } = connection;
-    subscribe(message => {
-      if (message === "ping") {
-        send("pong");
-      }
-    });
-  }
-});
 ```
 
 ```js

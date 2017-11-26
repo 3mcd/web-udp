@@ -2,6 +2,11 @@
 
 import type { RTCIceCandidate, RTCSessionDescription } from "wrtc";
 
+type Route = {
+  type: "ROUTE",
+  route: string
+};
+
 type OfferClient = {
   type: "OFFER_CLIENT",
   pid: string,
@@ -59,6 +64,7 @@ type TransportClose = {
 };
 
 export type Message =
+  | Route
   | Open
   | OfferClient
   | Offer

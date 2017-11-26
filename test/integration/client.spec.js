@@ -23,7 +23,8 @@ describe("Client.RTCConnectionProvider", () => {
       onConnection
     });
     client = new Client({
-      provider
+      provider,
+      transport
     });
   });
 

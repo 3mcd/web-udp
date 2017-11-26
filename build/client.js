@@ -20,7 +20,7 @@ const output = {
   file: "dist/client.js",
   format: "umd",
   name: "Udp",
-  sourceMap: true
+  sourcemap: true
 };
 
 function build() {

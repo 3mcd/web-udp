@@ -55,8 +55,8 @@ export default class RTCPeer implements PeerInterface {
     this._pc.addEventListener("datachannel", this._onDataChannel);
     this._pc.addEventListener("icecandidate", this._onIceCandidate);
     this._pc.addEventListener(
-      "connectionstatechange",
-      this._onConnectionStateChange
+      "signalingstatechange",
+      this._onSignalingStateChange
     );
   }
 
@@ -66,7 +66,9 @@ export default class RTCPeer implements PeerInterface {
 
     return new Promise(resolve => {
       const handle = () => {
-        const channel = new DataChannel({ dc });
+        const channel = (this._channels[dc.label] = new DataChannel({
+          dc
+        }));
         resolve(channel);
         this._onChannel(channel);
       };
@@ -111,7 +113,7 @@ export default class RTCPeer implements PeerInterface {
     this._onChannel(channel);
   };
 
-  _onConnectionStateChange = () => {
+  _onSignalingStateChange = () => {
     const { connectionState } = this._pc;
 
     switch (connectionState) {

@@ -5,14 +5,18 @@ import shortid from "shortid";
 import type { Message, Transport } from "../../protocol";
 
 export default class Broker {
-  _transports: { [id: string]: Transport } = {};
+  _transports: { [route: string]: Transport } = {};
 
-  register(transport: Transport, id: string = shortid()) {
-    this._transports[id] = transport;
+  register(transport: Transport, route: string = shortid()) {
+    this._transports[route] = transport;
     transport.subscribe((message: Message) =>
-      this._onMessage(message, id)
+      this._onMessage(message, route)
     );
-    return id;
+    transport.send({
+      type: "ROUTE",
+      route
+    });
+    return route;
   }
 
   _onMessage = (message: Message, src: string) => {

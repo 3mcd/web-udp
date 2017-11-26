@@ -28,7 +28,10 @@ function createLocalClient(
   // Route messages to/from client.
   broker.register(left, id);
 
-  return new Client({ provider });
+  return new Client({
+    provider,
+    transport: right
+  });
 }
 
 type ServerOptions = {
@@ -44,10 +47,7 @@ export default class Server {
   _server: HTTPServer;
 
   constructor(options: ServerOptions) {
-    const {
-      server,
-      onConnection
-    } = options;
+    const { server, onConnection } = options;
 
     this._server = server;
 
@@ -64,7 +64,11 @@ export default class Server {
   }
 
   client(onConnection: Connection => mixed) {
-    const client = createLocalClient(undefined, this._broker, onConnection);
+    const client = createLocalClient(
+      undefined,
+      this._broker,
+      onConnection
+    );
 
     // Create the signaling server.
     const signaling = new WebSocket.Server({ server: this._server });
@@ -80,5 +84,4 @@ export default class Server {
 
     return client;
   }
-
 }

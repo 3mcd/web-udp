@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <a id="connect" href="">Connect</a>
+  <script type="text/javascript" src="../dist/client.js"></script>
+  <script type="text/javascript">
+    const client = new Udp.Client({
+      onConnection: ({ subscribe }) =>
+        subscribe(console.log),
+      url: "localhost:4000"
+    });
+
+    client.route().then(route =>
+      document.getElementById("connect").href =
+        `${location.href.split("?")[0]}?route=${route}`
+    );
+
+    const match = location.search.match(/route=(.*)/);
+
+    if (match) {
+      client
+        .connect(match[1])
+        .then(
+          peer => peer.send("HELLO")
+        );
+    }
+  </script>
+</body>
+</html>
