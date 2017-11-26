@@ -1,8 +1,9 @@
+**/*.js.map
+.babelrc
+.flowconfig
+build/
 coverage/
 examples/
 flow-typed/
 src/
 test/
-.js.map
-.babelrc
-.flowconfig
