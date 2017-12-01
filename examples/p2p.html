@@ -9,7 +9,11 @@
   <script type="text/javascript">
     const client = new Udp.Client({
       onConnection: ({ subscribe }) =>
-        subscribe(console.log),
+        subscribe(m => {
+          const el = document.createElement("div");
+          el.textContent = m;
+          document.body.appendChild(el);
+        }),
       url: "localhost:4000"
     });
 

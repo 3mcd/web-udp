@@ -4,8 +4,6 @@ import { Server, WebSocket } from "mock-socket";
 
 import WebSocketTransport from "../../../../src/protocol/transport/socket";
 
-import { tick } from "../../../util/async";
-
 global.WebSocket = WebSocket;
 
 describe("WebSocketTransport", () => {
@@ -35,8 +33,6 @@ describe("WebSocketTransport", () => {
         })
       );
 
-      await tick();
-
       expect(subscriber).toHaveBeenCalledWith({
         foo: "bar"
       });
@@ -53,8 +49,6 @@ describe("WebSocketTransport", () => {
           foo: "bar"
         })
       );
-
-      await tick();
 
       expect(subscriber).not.toHaveBeenCalled();
     });

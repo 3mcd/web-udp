@@ -1,12 +1,11 @@
 // @flow
 
+import type { RTCIceCandidate } from "wrtc";
+
 import type { ConnectionProvider, Connection } from "..";
-import type { PeerInterface } from "./rtc-peer";
 import type { Message, Transport } from "../../../protocol";
 
 import { RTCPeerConnection, RTCSessionDescription } from "wrtc";
-
-import type { RTCIceCandidate } from "wrtc";
 
 import RTCPeer from "./rtc-peer";
 
@@ -31,12 +30,12 @@ export type RTCConnectionProviderOptions = {
 
 export default class RTCConnectionProvider
   implements ConnectionProvider {
+  _onPeerChannel: Connection => mixed;
   _peers: { [string]: RTCPeer } = {};
   _transport: Transport;
-  _onPeerChannel: Connection => mixed;
 
   constructor(options: RTCConnectionProviderOptions) {
-    const { transport, onConnection = connection => {} } = options;
+    const { transport, onConnection = () => {} } = options;
 
     this._transport = transport;
     this._onPeerChannel = onConnection;
@@ -50,8 +49,9 @@ export default class RTCConnectionProvider
   async create(pid: string, cid: string): Promise<Connection> {
     const peer = this._peers[pid] || this._addPeer(pid);
     const channel = peer.channel(cid);
+    const sdp = await peer.offer();
 
-    peer.offer();
+    this._onPeerSDP(sdp, pid);
 
     return await channel;
   }
@@ -59,7 +59,7 @@ export default class RTCConnectionProvider
   /**
    * Handle a signaling message.
    */
-  _onMessage = (message: Message) => {
+  _onMessage = async (message: Message) => {
     switch (message.type) {
       // Route ICE candidates to peers.
       case "ICE": {
@@ -98,7 +98,8 @@ export default class RTCConnectionProvider
         peer.setRemoteDescription(description);
 
         if (message.type === "OFFER") {
-          peer.answer();
+          const sdp = await peer.answer();
+          this._onPeerSDP(sdp, src);
         }
 
         break;
@@ -108,20 +109,21 @@ export default class RTCConnectionProvider
     }
   };
 
-  _addPeer(id: string, local: boolean = true) {
-    if (this._peers[id]) {
-      throw new Error(`RTCPeer with id ${id} already exists.`);
+  _addPeer(pid: string, local: boolean = true) {
+    if (this._peers[pid]) {
+      throw new Error(`RTCPeer with id ${pid} already exists.`);
     }
 
     const peer = new RTCPeer({
-      pc: new RTCPeerConnection(RTC_PEER_CONNECTION_OPTIONS),
       onChannel: this._onPeerChannel,
-      onClose: () => this._onPeerClose(id),
-      onSDP: sdp => this._onPeerSDP(sdp, id),
-      onICE: ice => this._onPeerICE(ice, id)
+      onClose: () => this._onPeerClose(pid),
+      onICE: ice => this._onPeerICE(ice, pid),
+      peerConnection: new RTCPeerConnection(
+        RTC_PEER_CONNECTION_OPTIONS
+      )
     });
 
-    this._peers[id] = peer;
+    this._peers[pid] = peer;
 
     return peer;
   }
@@ -158,12 +160,12 @@ export default class RTCConnectionProvider
     });
   };
 
-  _onPeerClose = (id: string) => {
-    delete this._peers[id];
+  _onPeerClose = (pid: string) => {
+    delete this._peers[pid];
   };
 
-  close(id: string) {
-    const peer = this._peers[id];
+  close(pid: string) {
+    const peer = this._peers[pid];
 
     if (!peer) {
       return;

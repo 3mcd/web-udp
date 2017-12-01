@@ -11,7 +11,11 @@
         ({ send, subscribe }) => {
           send("PING");
           send("PULL");
-          subscribe(console.log);
+          subscribe(m => {
+            const el = document.createElement("div");
+            el.textContent = m;
+            document.body.appendChild(el);
+          });
         }
       );
     </script>

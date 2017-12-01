@@ -21,8 +21,6 @@ export default class Broker {
 
   _onMessage = (message: Message, src: string) => {
     switch (message.type) {
-      case "OPEN":
-        break;
       case "OFFER_CLIENT": {
         const { payload, pid } = message;
 

@@ -55,17 +55,12 @@ type IceClient = {
   }
 };
 
-type Open = {
-  type: "OPEN"
-};
-
 type TransportClose = {
   type: "TRANSPORT_CLOSE"
 };
 
 export type Message =
   | Route
-  | Open
   | OfferClient
   | Offer
   | AnswerClient

@@ -1,8 +1,7 @@
 // @flow
 
-import type { MessageHandler, Transport } from "..";
-
 import type { Message } from "../message";
+import type { MessageHandler, Transport } from "..";
 
 export default class LocalTransport implements Transport {
   static create() {
@@ -20,12 +19,6 @@ export default class LocalTransport implements Transport {
   }
 
   _subscribers: MessageHandler[] = [];
-
-  constructor() {
-    this.send({
-      type: "OPEN"
-    });
-  }
 
   subscribe = (handler: MessageHandler) => {
     if (this._subscribers.indexOf(handler) > -1) {

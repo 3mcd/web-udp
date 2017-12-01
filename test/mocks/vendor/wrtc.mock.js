@@ -1,7 +1,5 @@
 // @flow
 
-import { tick } from "../../util/async";
-
 export type RTCSessionDescriptionOptions = {
   sdp: string,
   type: "offer" | "answer"
@@ -80,18 +78,11 @@ export class RTCPeerConnection {
     }
   }
 
-  createAnswer(
-    cb: RTCSessionDescription => void,
-    err: Error,
-    options: mixed
-  ) {
-    // Immediately invoke the callback with SDP.
-    cb(
-      new RTCSessionDescription({
-        sdp: "",
-        type: "answer"
-      })
-    );
+  async createAnswer() {
+    return new RTCSessionDescription({
+      sdp: "",
+      type: "answer"
+    });
   }
 
   createDataChannel(): RTCDataChannel {
@@ -102,17 +93,11 @@ export class RTCPeerConnection {
     return channel;
   }
 
-  createOffer(
-    cb: RTCSessionDescription => void,
-    err: Error,
-    options: mixed
-  ) {
-    cb(
-      new RTCSessionDescription({
-        sdp: "",
-        type: "offer"
-      })
-    );
+  async createOffer() {
+    return new RTCSessionDescription({
+      sdp: "",
+      type: "offer"
+    });
   }
 
   setLocalDescription(sdp: RTCSessionDescription) {

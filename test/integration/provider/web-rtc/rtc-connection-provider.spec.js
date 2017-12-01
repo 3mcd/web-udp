@@ -6,6 +6,8 @@ import RTCConnectionProvider from "../../../../src/client/provider/web-rtc/rtc-c
 
 import Transport from "../../../mocks/protocol/transport.mock";
 
+import { tick } from "../../../util/async";
+
 describe("RTCConnectionProvider.RTCPeer", () => {
   let transport;
   let onConnection;
@@ -21,8 +23,10 @@ describe("RTCConnectionProvider.RTCPeer", () => {
   });
 
   describe("create()", () => {
-    it("sends offers created by peers", () => {
+    it("sends offers created by peers", async () => {
       const connection = provider.create("foo", "0");
+
+      await tick();
 
       expect(transport.send).toHaveBeenCalledWith({
         type: "OFFER_CLIENT",
@@ -38,7 +42,7 @@ describe("RTCConnectionProvider.RTCPeer", () => {
   });
 
   describe("handle()", () => {
-    it("sends answer on remote offer", () => {
+    it("sends answer on remote offer", async () => {
       transport.__provide__({
         type: "OFFER",
         src: "foo",
@@ -49,6 +53,8 @@ describe("RTCConnectionProvider.RTCPeer", () => {
           }
         }
       });
+
+      await tick();
 
       expect(transport.send).toHaveBeenCalledWith({
         type: "ANSWER_CLIENT",

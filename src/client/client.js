@@ -46,11 +46,10 @@ export default class Client {
     this._provider = provider;
     this._route = new Promise(resolve => {
       const handle = message => {
-        if (message.type !== "ROUTE") {
-          return;
+        if (message.type === "ROUTE") {
+          resolve(message.route);
+          transport.unsubscribe(handle);
         }
-        resolve(message.route);
-        transport.unsubscribe(handle);
       };
       transport.subscribe(handle);
     });
@@ -64,9 +63,7 @@ export default class Client {
     // Create an id for this connection.
     const cid = shortid();
     // Establish a UDP connection with the remote client.
-    const connection = await this._provider.create(to, cid);
-
-    return connection;
+    return await this._provider.create(to, cid);
   }
 
   close(id: string) {

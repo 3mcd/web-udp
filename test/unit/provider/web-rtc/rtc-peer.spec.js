@@ -4,11 +4,7 @@ jest.mock("wrtc", () => require("../../../mocks/vendor/wrtc.mock"));
 
 import RTCPeer from "../../../../src/client/provider/web-rtc/rtc-peer";
 
-import { tick } from "../../../util/async";
-import Connection from "../../../mocks/provider/connection.mock";
-
 import {
-  RTCDataChannel,
   RTCPeerConnection,
   RTCSessionDescription
 } from "../../../mocks/vendor/wrtc.mock";
@@ -17,22 +13,19 @@ describe("RTCPeer", () => {
   let onChannel;
   let onClose;
   let onICE;
-  let onSDP;
-  let pc;
+  let peerConnection;
   let peer;
 
   beforeEach(() => {
     onChannel = jest.fn();
     onClose = jest.fn();
     onICE = jest.fn();
-    onSDP = jest.fn();
-    pc = new RTCPeerConnection();
+    peerConnection = new RTCPeerConnection();
     peer = new RTCPeer({
-      pc,
+      peerConnection,
       onChannel,
       onClose,
-      onICE,
-      onSDP
+      onICE
     });
   });
 
@@ -42,10 +35,10 @@ describe("RTCPeer", () => {
 
       // Trigger "open" by setting the remote/local description of
       // the mock manually.
-      pc.setLocalDescription(
+      peerConnection.setLocalDescription(
         new RTCSessionDescription({ sdp: "", type: "offer" })
       );
-      pc.setRemoteDescription(
+      peerConnection.setRemoteDescription(
         new RTCSessionDescription({ sdp: "", type: "answer" })
       );
 
@@ -59,10 +52,10 @@ describe("RTCPeer", () => {
 
       // Trigger "open" by setting the remote/local description of
       // the mock manually.
-      pc.setLocalDescription(
+      peerConnection.setLocalDescription(
         new RTCSessionDescription({ sdp: "", type: "offer" })
       );
-      pc.setRemoteDescription(
+      peerConnection.setRemoteDescription(
         new RTCSessionDescription({ sdp: "", type: "answer" })
       );
 
@@ -77,26 +70,10 @@ describe("RTCPeer", () => {
       candidate: ""
     };
 
-    pc.__triggerIceCandidate__({
+    peerConnection.__triggerIceCandidate__({
       candidate
     });
 
     expect(onICE).toHaveBeenCalledWith(candidate);
-  });
-
-  it("emits SDP data", () => {
-    peer.offer();
-
-    expect(onSDP).toHaveBeenCalledWith({
-      sdp: "",
-      type: "offer"
-    });
-
-    peer.answer();
-
-    expect(onSDP).toHaveBeenCalledWith({
-      sdp: "",
-      type: "answer"
-    });
   });
 });

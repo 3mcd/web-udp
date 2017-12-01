@@ -1,7 +1,6 @@
 // @flow
 
 import type { ConnectionProvider } from "../../../../src/client/provider";
-import type { Message } from "../../../../src/protocol/message";
 
 import Connection from "../connection.mock";
 

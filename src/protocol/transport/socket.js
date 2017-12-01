@@ -9,20 +9,19 @@ const deserialize = JSON.parse;
 
 export default class WebSocketTransport implements Transport {
   _buffer: Message[] = [];
-
-  _subscribers: MessageHandler[] = [];
-
   _open: boolean = false;
-
   _socket: WebSocket;
+  _subscribers: MessageHandler[] = [];
 
   constructor(socket: WebSocket) {
     this._socket = socket;
+
     if (socket.readyState === 1) {
       this._onOpen();
     } else {
       this._socket.addEventListener("open", this._onOpen);
     }
+
     this._socket.addEventListener("message", this._onMessage);
     this._socket.addEventListener("close", this._onClose);
   }
@@ -37,9 +36,6 @@ export default class WebSocketTransport implements Transport {
 
   _onOpen = () => {
     this._open = true;
-    this.send({
-      type: "OPEN"
-    });
   };
 
   _onMessage = (e: Event) => {

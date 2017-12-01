@@ -10,6 +10,6 @@ export interface Connection {
 }
 
 export interface ConnectionProvider {
-  create(id: string, cid: string): Promise<Connection>;
-  close(id: string): void;
+  create(pid: string, cid: string): Promise<Connection>;
+  close(pid: string): void;
 }
