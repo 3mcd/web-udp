@@ -68,9 +68,7 @@ server.listen(8000);
 
 async function main() {
   const left = new Client({
-    onConnection: ({ subscribe }) => {
-      subscribe(console.log);
-    }
+    onConnection: ({ subscribe }) => subscribe(console.log)
   });
   const right = new Client();
   const route = await left.route();
