@@ -4,7 +4,7 @@ jest.mock("../../../../src/client/provider/web-rtc/rtc-peer", () =>
   require("../../../mocks/provider/web-rtc/rtc-peer.mock")
 );
 
-jest.mock("wrtc", () => require("../../../mocks/Vendor/wrtc.mock"));
+jest.mock("wrtc", () => require("../../../mocks/vendor/wrtc.mock"));
 
 import type { Message } from "../../../../src/protocol/message";
 import type { Connection } from "../../../../src/client/provider";
