@@ -8,33 +8,46 @@ type DataChannelOptions = {
   dataChannel: RTCDataChannel
 };
 
-type RTCChannelSubscriber = (data: any) => any;
+import { Signal } from "../../../signal";
 
-export default class RTCChannel implements Connection, Transport {
+export default class RTCChannel extends Signal<any> implements Connection, Transport {
   _dataChannel: RTCDataChannel;
   _open: boolean = true;
-  _subscribers: RTCChannelSubscriber[] = [];
+
+  closed: Signal<void> = new Signal();
+  errors: Signal<{ err: string }> = new Signal();
 
   get id() {
     return this._dataChannel.label;
   }
 
   constructor(options: DataChannelOptions) {
+    super();
+
     const { dataChannel } = options;
 
     this._dataChannel = dataChannel;
     this._dataChannel.addEventListener("message", this._onMessage);
+    this._dataChannel.addEventListener("close", this.closed._dispatch);
+    this._dataChannel.addEventListener("error", this.errors._dispatch);
+
+    this.closed.subscribe(this._onClose);
   }
 
-  _onMessage = (e: MessageEvent) => {
-    for (let subscriber of this._subscribers) {
-      subscriber(e.data);
-    }
+  _onClose = () => {
+    this._open = false;
+    this._dataChannel.removeEventListener("message", this._onMessage);
+    // Again, a segfault will occur if the connection is closed and .close()
+    // is called:
+    // this._dataChannel.close();
   };
+
+  _onMessage = (e: MessageEvent) =>
+    this._dispatch(e.data);
 
   send = (message: mixed) => {
     // wrtc's RTCDataChannel.send currently will segfault if connection is
-    // closed and certain properties are accessed.
+    // closed and certain properties are accessed:
     if (
       // Even accessing readyState causes a segfault:
       // this._dataChannel.readyState === "closing" ||
@@ -46,28 +59,7 @@ export default class RTCChannel implements Connection, Transport {
     this._dataChannel.send(message);
   };
 
-  subscribe = (subscriber: RTCChannelSubscriber) => {
-    if (!this._open) {
-      return;
-    }
-
-    this._subscribers.push(subscriber);
-  };
-
-  unsubscribe = (subscriber: RTCChannelSubscriber) => {
-    if (!this._open) {
-      return;
-    }
-
-    this._subscribers.splice(
-      this._subscribers.indexOf(subscriber),
-      1
-    );
-  };
-
   close() {
-    this._open = false;
-    this._dataChannel.removeEventListener("message", this._onMessage);
-    // this._dataChannel.close();
+    this.closed._dispatch();
   }
 }

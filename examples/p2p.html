@@ -28,7 +28,10 @@
       client
         .connect(match[1])
         .then(
-          peer => peer.send("HELLO")
+          ({ send, subscribe, closed }) => {
+            send("HELLO");
+            closed.subscribe(() => console.log("CLOSE"));
+          }
         );
     }
   </script>

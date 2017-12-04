@@ -8,7 +8,7 @@
       const client = new Udp.Client({ url: "localhost:4000" });
 
       client.connect().then(
-        ({ send, subscribe }) => {
+        ({ send, subscribe, closed }) => {
           send("PING");
           send("PULL");
           subscribe(m => {
@@ -16,6 +16,7 @@
             el.textContent = m;
             document.body.appendChild(el);
           });
+          closed.subscribe(() => console.log("CLOSE"));
         }
       );
     </script>

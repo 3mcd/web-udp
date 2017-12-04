@@ -10,6 +10,7 @@ import type {
 
 import type { Connection } from "..";
 
+import { Signal } from "../../../signal";
 import RTCChannel from "./rtc-channel";
 
 // Enforce UDP-like SCTP messaging.
