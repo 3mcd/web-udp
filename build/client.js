@@ -2,6 +2,7 @@ const rollup = require("rollup");
 const babel = require("rollup-plugin-babel");
 const resolve = require("rollup-plugin-node-resolve");
 const cjs = require("rollup-plugin-commonjs");
+const uglify = require("rollup-plugin-uglify");
 
 const input = {
   input: "src/client/index.js",
@@ -12,7 +13,8 @@ const input = {
     babel({
       exclude: "node_modules/**"
     }),
-    cjs()
+    cjs(),
+    uglify()
   ]
 };
 
