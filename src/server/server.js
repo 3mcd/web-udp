@@ -6,8 +6,8 @@ import type { Connection } from "../client/provider";
 
 import WebSocket from "ws";
 
-import Broker from "./broker";
-import Client from "../client/client";
+import Broker from "../protocol/broker";
+import { Client } from "../client";
 import RTCConnectionProvider from "../client/provider/web-rtc/rtc-connection-provider";
 import { CLIENT_MASTER } from "../const";
 import { LocalTransport, WebSocketTransport } from "../protocol";

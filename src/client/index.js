@@ -1,3 +1,3 @@
 // @flow
 
-export { default as Client } from "./client";
+export { Client } from "./client";

@@ -2,7 +2,7 @@
 
 jest.mock("wrtc", () => require("../mocks/vendor/wrtc.mock"));
 
-import Client from "../../src/client/client";
+import { Client } from "../../src/client/client";
 import RTCConnectionProvider from "../../src/client/provider/web-rtc/rtc-connection-provider";
 
 import Transport from "../mocks/protocol/transport.mock";

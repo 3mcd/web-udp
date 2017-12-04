@@ -6,7 +6,7 @@ export { default as WebSocketTransport } from "./transport/socket";
 import type { Message } from "./message";
 
 export type { Message };
-export type MessageHandler = Message => void;
+export type MessageHandler = Message => any;
 
 export interface Transport {
   send(Message): mixed;

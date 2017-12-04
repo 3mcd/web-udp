@@ -13,7 +13,7 @@ type ClientOptions =
   | {| url?: string, onConnection: Connection => mixed |}
   | { provider: ConnectionProvider, transport: Transport };
 
-export default class Client {
+export class Client {
   _provider: ConnectionProvider;
   _route: Promise<string>;
 

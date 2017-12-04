@@ -1,13 +1,13 @@
 // @flow
 
-type Subscriber = T => any;
+type Subscriber<T> = T => any;
 
-export class Signal<T> {
-  _subscribers: Subscriber[] = [];
+export class Signal<T = *> {
+  _subscribers: Subscriber<T>[] = [];
 
-  _dispatch = (data: T) => {
+  dispatch(t: T) {
     for (const subscriber of this._subscribers) {
-      subscriber(data);
+      subscriber(t);
     }
   }
 
