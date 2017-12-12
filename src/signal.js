@@ -16,7 +16,7 @@ export class Signal<T = *> {
       return;
     }
     this._subscribers.push(subscriber);
-  }
+  };
 
   unsubscribe = (subscriber: Subscriber<T>) => {
     const index = this._subscribers.indexOf(subscriber);
@@ -24,5 +24,5 @@ export class Signal<T = *> {
       return;
     }
     this._subscribers.splice(index, 1);
-  }
+  };
 }

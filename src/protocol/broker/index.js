@@ -9,13 +9,16 @@ export default class Broker {
 
   register(transport: Transport, route: string = shortid()) {
     this._transports[route] = transport;
+
     transport.subscribe((message: Message) =>
       this._onMessage(message, route)
     );
+
     transport.send({
       type: "ROUTE",
       route
     });
+
     return route;
   }
 

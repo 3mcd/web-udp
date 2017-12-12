@@ -10,7 +10,8 @@ type DataChannelOptions = {
 
 import { Signal } from "../../../signal";
 
-export default class RTCChannel extends Signal<> implements Connection {
+export default class RTCChannel extends Signal<>
+  implements Connection {
   _dataChannel: RTCDataChannel;
   _open: boolean = true;
 
@@ -28,9 +29,11 @@ export default class RTCChannel extends Signal<> implements Connection {
 
     this._dataChannel = dataChannel;
     this._dataChannel.addEventListener("message", this._onMessage);
-    this._dataChannel.addEventListener("close", () => this.closed.dispatch());
-    this._dataChannel.addEventListener("error",
-      e => this.errors.dispatch({ error: e.message })
+    this._dataChannel.addEventListener("close", () =>
+      this.closed.dispatch()
+    );
+    this._dataChannel.addEventListener("error", e =>
+      this.errors.dispatch({ error: e.message })
     );
 
     this.closed.subscribe(this._onClose);
@@ -44,8 +47,7 @@ export default class RTCChannel extends Signal<> implements Connection {
     // this._dataChannel.close();
   };
 
-  _onMessage = (e: MessageEvent) =>
-    this.dispatch((e.data: any));
+  _onMessage = (e: MessageEvent) => this.dispatch((e.data: any));
 
   send = (message: mixed) => {
     // wrtc's RTCDataChannel.send currently will segfault if connection is

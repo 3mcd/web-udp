@@ -50,7 +50,7 @@
     "prepush": "npm test",
     "prepublish": "npm run build",
     "start": "node examples/server.js",
-    "test": "jest",
+    "test": "flow && jest",
     "test-coverage": "jest --verbose --coverage"
   },
   "version": "1.0.0"
