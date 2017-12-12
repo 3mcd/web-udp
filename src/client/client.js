@@ -5,17 +5,21 @@ import type { Connection, ConnectionProvider } from "./provider";
 
 import shortid from "shortid";
 
+import { Signal } from "../signal";
+
 import { CLIENT_MASTER } from "../const";
 import WebSocketTransport from "../protocol/transport/socket";
 import { RTCConnectionProvider } from "./provider/web-rtc";
 
 type ClientOptions =
-  | {| url?: string, onConnection: Connection => mixed |}
+  | {| url?: string |}
   | { provider: ConnectionProvider, transport: Transport };
 
 export class Client {
   _provider: ConnectionProvider;
   _route: Promise<string>;
+
+  connections: Signal<Connection> = new Signal();
 
   constructor(options: ClientOptions) {
     let provider: ConnectionProvider;
@@ -26,8 +30,7 @@ export class Client {
       transport = options.transport;
     } else {
       let {
-        url = `ws://${location.hostname}:${location.port}`,
-        onConnection
+        url = `ws://${location.hostname}:${location.port}`
       } = options;
 
       url = url.replace(/^http/, "ws");
@@ -39,7 +42,7 @@ export class Client {
       transport = new WebSocketTransport(new WebSocket(url));
       provider = new RTCConnectionProvider({
         transport,
-        onConnection
+        onConnection: this.connections.dispatch
       });
     }
 

@@ -11,12 +11,16 @@
         ({ send, subscribe, closed }) => {
           send("PING");
           send("PULL");
+
           subscribe(m => {
             const el = document.createElement("div");
             el.textContent = m;
             document.body.appendChild(el);
           });
-          closed.subscribe(() => console.log("CLOSE"));
+
+          closed.subscribe(
+            () => console.log("CLOSE")
+          );
         }
       );
     </script>

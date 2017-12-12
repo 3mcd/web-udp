@@ -6,23 +6,30 @@ The library is currently implemented as an abstraction on top of unreliable RTCD
 
 This project is a WIP.
 
-## Examples
+## API
 
-### Target v1 API
 ```js
-Client(options?: { url?: string, onConnection?: Connection => * })
+Signal<T>#subscribe(subscriber: (data: *) => *)
+Signal<T>#unsubscribe(subscriber: (data: *) => *)
+
+Client(options?: { url?: string })
 Client#connect(to?: string = "__MASTER__"): Promise<Connection>
 Client#route(): Promise<string>
+Client#connections: Signal<Connection>
 
+Connection: Signal<*>
 Connection#send(message: *): void
-Connection#subscribe(messageSubscriber: (message: *) => *): void
-Connection#unsubscribe(messageSubscriber: (message: *) => *): void
 Connection#close(): void
+Connection#closed: Signal<>
+Connection#errors: Signal<{ err: string }>
 
 // Node
-Server({ server: http.Server, onConnection: Connection => * })
+Server({ server: http.Server })
 Server#client(connectionSubscriber: Connection => *): Client
+Client#connections: Signal<Connection>
 ```
+
+## Examples
 
 ### Client/Server
 
@@ -46,17 +53,29 @@ async function main() {
 const server = require("http").createServer();
 const { Server } = require("udp-web");
 
-const udp = new Server({
-  server,
-  onConnection: connection => {
-    const { send, subscribe } = connection;
-    subscribe(message => {
-      if (message === "ping") {
-        send("pong");
+const udp = new Server({ server });
+
+udp.connections.subscribe(
+  connection => {
+    const { send, subscribe, errors, closed } = connection;
+
+    subscribe(
+      message => {
+        if (message === "ping") {
+          send("pong");
+        }
       }
-    });
+    );
+
+    closed.subscribe(
+      () => console.log("A connection closed.")
+    );
+
+    errors.subscribe(
+      err => console.log(err)
+    );
   }
-});
+);
 
 server.listen(8000);
 ```
@@ -67,12 +86,14 @@ server.listen(8000);
 // client.js
 
 async function main() {
-  const left = new Client({
-    onConnection: ({ subscribe }) => subscribe(console.log)
-  });
+  const left = new Client();
   const right = new Client();
   const route = await left.route();
   const connection = await right.connect(route);
+
+  left.connections.subscribe(
+    ({ subscribe }) => subscribe(console.log)
+  );
 
   connection.send("HELLO");
 }
