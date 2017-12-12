@@ -1,12 +1,14 @@
 // @flow
 
+import type { Signal } from "../../signal";
 import type { Message } from "../../protocol";
 
 export interface Connection {
   send(mixed): void;
-  subscribe((mixed) => mixed): void;
-  unsubscribe((mixed) => mixed): void;
   close(): void;
+  closed: Signal<>;
+  errors: Signal<{ error: string }>;
+  messages: Signal<>;
 }
 
 export interface ConnectionProvider {

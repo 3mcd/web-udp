@@ -42,7 +42,8 @@ export class Client {
       transport = new WebSocketTransport(new WebSocket(url));
       provider = new RTCConnectionProvider({
         transport,
-        onConnection: this.connections.dispatch
+        onConnection: connection =>
+          this.connections.dispatch(connection)
       });
     }
 

@@ -40,6 +40,8 @@ export default class RTCConnectionProvider
     this._transport = transport;
     this._onPeerChannel = onConnection;
 
+    console.log(onConnection);
+
     this._transport.subscribe(this._onMessage);
   }
 

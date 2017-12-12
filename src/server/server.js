@@ -6,6 +6,7 @@ import type { Connection } from "../client/provider";
 
 import WebSocket from "ws";
 
+import { Signal } from "../signal";
 import Broker from "../protocol/broker";
 import { Client } from "../client";
 import RTCConnectionProvider from "../client/provider/web-rtc/rtc-connection-provider";
@@ -41,13 +42,17 @@ type ServerOptions = {
 
 // Server() sets up a signaling broker that can facilitate connections between
 // clients.
-export default class Server {
+export class Server {
   _broker: Broker;
   _master: Client;
   _server: HTTPServer;
 
+  get connections(): Signal<Connection> {
+    return this._master.connections;
+  }
+
   constructor(options: ServerOptions) {
-    const { server, onConnection } = options;
+    const { server } = options;
 
     this._server = server;
 
@@ -59,7 +64,7 @@ export default class Server {
     this._master = createLocalClient(
       CLIENT_MASTER,
       this._broker,
-      onConnection
+      connection => this.connections.dispatch(connection)
     );
   }
 

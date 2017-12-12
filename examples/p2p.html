@@ -7,15 +7,17 @@
   <a id="connect" href="">Connect</a>
   <script type="text/javascript" src="../dist/client.js"></script>
   <script type="text/javascript">
-    const client = new Udp.Client({
-      onConnection: ({ subscribe }) =>
-        subscribe(m => {
+    const client = new Udp.Client({ url: "localhost:4000" });
+
+    client.connections.subscribe(
+      ({ messages }) => {
+        messages.subscribe(message => {
           const el = document.createElement("div");
-          el.textContent = m;
+          el.textContent = message;
           document.body.appendChild(el);
-        }),
-      url: "localhost:4000"
-    });
+        });
+      }
+    );
 
     client.route().then(route =>
       document.getElementById("connect").href =
@@ -28,7 +30,7 @@
       client
         .connect(match[1])
         .then(
-          ({ send, subscribe, closed }) => {
+          ({ send, messages, closed }) => {
             send("HELLO");
             closed.subscribe(() => console.log("CLOSE"));
           }
