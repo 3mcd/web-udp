@@ -53,5 +53,5 @@
     "test": "flow && jest",
     "test-coverage": "jest --verbose --coverage"
   },
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
