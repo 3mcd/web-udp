@@ -10,8 +10,7 @@ type DataChannelOptions = {
 
 import { Signal } from "../../../signal";
 
-export default class RTCChannel
-  implements Connection {
+export default class RTCChannel implements Connection {
   _dataChannel: RTCDataChannel;
   _open: boolean = true;
 

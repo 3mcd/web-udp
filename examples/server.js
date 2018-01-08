@@ -6,29 +6,26 @@ const udp = new Server({
   server
 });
 
-udp.connections.subscribe(
-  ({ send, messages }) =>
-    messages.subscribe(message => {
-      if (message === "PING") {
-        setTimeout(() => send("PONG"), 1000);
-      } else if (message === "PULL") {
-        setInterval(() => send("PUSH"), 1000);
-      }
-    })
+udp.connections.subscribe(({ send, messages }) =>
+  messages.subscribe(message => {
+    if (message === "PING") {
+      setTimeout(() => send("PONG"), 1000);
+    } else if (message === "PULL") {
+      setInterval(() => send("PUSH"), 1000);
+    }
+  })
 );
 
 const client = udp.client();
 
-client.connect().then(
-  ({ send, messages }) => {
-    messages.subscribe(message => {
-      console.log(message);
-      if (message === "PONG") {
-        send("PING");
-      }
-    });
-    send("PING");
-  }
-);
+client.connect().then(({ send, messages }) => {
+  messages.subscribe(message => {
+    console.log(message);
+    if (message === "PONG") {
+      send("PING");
+    }
+  });
+  send("PING");
+});
 
 server.listen(4000);
