@@ -1,6 +1,8 @@
 {
   "author": "",
-  "browser": "dist/client.js",
+  "browser": {
+    "./lib/server.js": "./dist/client.js"
+  },
   "dependencies": {
     "shortid": "^2.2.8",
     "wrtc": "0.0.63",
