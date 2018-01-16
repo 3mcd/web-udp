@@ -1,7 +1,8 @@
 {
   "author": "",
   "browser": {
-    "client": "./dist/client.js"
+    "client": "./dist/client.js",
+    "server": "./lib/server.js"
   },
   "dependencies": {
     "shortid": "^2.2.8",
