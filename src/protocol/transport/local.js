@@ -18,10 +18,11 @@ export default class LocalTransport implements Transport {
     return { left, right };
   }
 
+  _closed: boolean = false;
   _subscribers: MessageHandler[] = [];
 
   subscribe = (handler: MessageHandler) => {
-    if (this._subscribers.indexOf(handler) > -1) {
+    if (this._closed || this._subscribers.indexOf(handler) > -1) {
       return;
     }
 
@@ -39,8 +40,16 @@ export default class LocalTransport implements Transport {
   };
 
   send = (message: Message) => {
+    if (this._closed) {
+      return;
+    }
     for (let i = 0; i < this._subscribers.length; i++) {
       this._subscribers[i](message);
     }
   };
+
+  close() {
+    this._closed = true;
+    this._subscribers = [];
+  }
 }

@@ -57,6 +57,13 @@ export class Client {
       };
       transport.subscribe(handle);
     });
+
+    if (typeof window !== "undefined") {
+      // Gracefully close the signaling transport before the browser tab is closed.
+      window.addEventListener("beforeunload", () => {
+        transport.close();
+      });
+    }
   }
 
   route() {

@@ -24,6 +24,18 @@ export default class WebSocketTransport implements Transport {
 
     this._socket.addEventListener("message", this._onMessage);
     this._socket.addEventListener("close", this._onClose);
+    this._socket.addEventListener("error", (err: mixed) => {
+      if (!err || typeof err.code !== "string") {
+        return;
+      }
+      // ECONNRESET can be thrown by some browsers when a connection isn't
+      // closed gracefully (e.g. user closes a tab). This should already be
+      // handled by the client, but we'll ignore it for now.
+      // See: https://github.com/websockets/ws/issues/1256
+      if (err.code !== "ECONNRESET") {
+        throw err;
+      }
+    });
   }
 
   _flush() {

@@ -22,7 +22,9 @@ export default (): Transport & TransportMockUtil => {
       _handlers.splice(_handlers.indexOf(handler), 1)
     ),
 
-    send: jest.fn((message: Message) => {}),
+    send: jest.fn(),
+
+    close: jest.fn(),
 
     __provide__: jest.fn((message: Message) =>
       _handlers.forEach(fn => fn(message))

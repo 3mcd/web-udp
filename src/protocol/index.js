@@ -12,4 +12,5 @@ export interface Transport {
   send(Message): mixed;
   subscribe(MessageHandler): mixed;
   unsubscribe(MessageHandler): mixed;
+  close(): mixed;
 }
