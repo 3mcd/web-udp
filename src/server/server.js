@@ -45,7 +45,7 @@ type ServerOptions = {
 export class Server {
   _broker: Broker;
   _master: Client;
-  _server: HTTPServer;
+  _webSocketServer: WebSocket.Server;
 
   get connections(): Signal<Connection> {
     return this._master.connections;
@@ -54,7 +54,8 @@ export class Server {
   constructor(options: ServerOptions) {
     const { server } = options;
 
-    this._server = server;
+    // Create the signaling server.
+    this._webSocketServer = new WebSocket.Server({ server });
 
     // Create a connection broker used to send signaling messages between
     // clients.
@@ -66,26 +67,22 @@ export class Server {
       this._broker,
       connection => this.connections.dispatch(connection)
     );
+
+    // Route signaling messages to/from clients.
+    this._webSocketServer.on("connection", ws => {
+      const id = this._broker.register(new WebSocketTransport(ws));
+      // Manually close data channels on signaling disconnect.
+      ws.on("close", () => this._master.close(id));
+    });
   }
 
-  client(onConnection: Connection => mixed) {
+  // Create a local client for use on the server.
+  client() {
     const client = createLocalClient(
       undefined,
       this._broker,
-      onConnection
+      connection => client.connections.dispatch(connection)
     );
-
-    // Create the signaling server.
-    const signaling = new WebSocket.Server({ server: this._server });
-
-    // Route signaling messages to/from clients.
-    signaling.on("connection", ws => {
-      const id = this._broker.register(new WebSocketTransport(ws));
-      // Temp workaround. We need to keep the signaling connection open to listen
-      // for the "close" event when the client drops. The data channel instances
-      // are then manually halted to prevent segfault in wrtc library.
-      ws.on("close", () => this._master.close(id));
-    });
 
     return client;
   }

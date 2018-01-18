@@ -50,7 +50,9 @@ export default class RTCPeer implements Peer {
 
     this._peerConnection = peerConnection;
 
-    this._peerConnection.addEventListener("close", this._onClose);
+    this._peerConnection.addEventListener("close", () =>
+      this.close()
+    );
     this._peerConnection.addEventListener(
       "datachannel",
       this._onDataChannel
@@ -165,9 +167,14 @@ export default class RTCPeer implements Peer {
   }
 
   close() {
-    this._peerConnection.close();
+    if (this._peerConnection.connectionState !== "closed") {
+      this._peerConnection.close();
+    }
+
     for (let cid in this._channels) {
       this._channels[cid].close();
     }
+
+    this._onClose();
   }
 }
