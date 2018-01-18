@@ -34,7 +34,7 @@ export default class RTCChannel implements Connection {
   _onMessage = (e: MessageEvent) =>
     this.messages.dispatch((e.data: any));
 
-  _onError = e => this.errors.dispatch({ error: e.message });
+  _onError = (e: Error) => this.errors.dispatch({ error: e.message });
 
   send = (message: mixed) => {
     if (
