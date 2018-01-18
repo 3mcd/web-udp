@@ -40,10 +40,10 @@ import { Client } from "web-udp";
 
 async function main() {
   const client = new Client();
-  const { send, subscribe } = await client.connect();
+  const { send, messages } = await client.connect();
 
   send("ping");
-  subscribe(console.log);
+  messages.subscribe(console.log);
 }
 ```
 
@@ -57,9 +57,9 @@ const udp = new Server({ server });
 
 udp.connections.subscribe(
   connection => {
-    const { send, subscribe, errors, closed } = connection;
+    const { send, messages, errors, closed } = connection;
 
-    subscribe(
+    messages.subscribe(
       message => {
         if (message === "ping") {
           send("pong");
@@ -92,7 +92,7 @@ async function main() {
   const connection = await right.connect(route);
 
   left.connections.subscribe(
-    ({ subscribe }) => subscribe(console.log)
+    ({ messages }) => messages.subscribe(console.log)
   );
 
   connection.send("HELLO");
