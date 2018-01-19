@@ -25,8 +25,8 @@ Connection#messages: Signal<*>
 
 // Node
 Server({ server: http.Server })
-Server#client(connectionSubscriber: Connection => *): Client
-Client#connections: Signal<Connection>
+Server#client(): Client
+Server#connections: Signal<Connection>
 ```
 
 ## Examples
