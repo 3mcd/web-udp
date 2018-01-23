@@ -7,22 +7,9 @@ import { Server } from "../../src/server";
 describe("WebUdp", () => {
   let udp;
   let server;
-  let fileServer;
 
   function setup() {
     server = http.createServer();
-    fileServer = http.createServer((req, res) => {
-      fs.readFile("./index.html", (error, content) => {
-        if (error) {
-          res.writeHead(500);
-          res.end(error.code);
-          res.end();
-          return;
-        }
-        res.writeHead(200, { "Content-Type": "text/html" });
-        res.end(content, "utf-8");
-      });
-    });
     udp = new Server({ server });
 
     udp.connections.subscribe(connection => {
@@ -34,19 +21,16 @@ describe("WebUdp", () => {
     });
 
     server.listen(5001);
-    fileServer.listen(5000);
   }
 
   function teardown() {
     server.close();
-    fileServer.close();
   }
 
   async function init() {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
-    await page.goto("http://localhost:5000");
     await page.addScriptTag({ path: "./dist/client.js" });
 
     return { browser, page };
@@ -54,8 +38,8 @@ describe("WebUdp", () => {
 
   beforeEach(setup);
 
-  describe("WebUdp", () => {
-    it("clients are provided a route from signaling server uppon connection", async () => {
+  describe("Client.Server", () => {
+    it("clients are provided a route from signaling server upon connection", async () => {
       const { browser, page } = await init();
       const res = await page.evaluate(() => {
         const client = new Udp.Client({
@@ -70,7 +54,7 @@ describe("WebUdp", () => {
       await browser.close();
     });
 
-    it("clients can send and recieve data to/from the master server", async () => {
+    it("clients can send data to the master client", async () => {
       const { browser, page } = await init();
       const res = await page.evaluate(() => {
         const client = new Udp.Client({
@@ -94,7 +78,7 @@ describe("WebUdp", () => {
       await browser.close();
     });
 
-    it("clients can send and recieve data to/from eachother", async () => {
+    it("clients can send data to peers", async () => {
       const { browser, page } = await init();
       const res = await page.evaluate(() => {
         const left = new Udp.Client({
