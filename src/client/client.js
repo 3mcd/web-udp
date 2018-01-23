@@ -11,6 +11,9 @@ import { CLIENT_MASTER } from "../const";
 import WebSocketTransport from "../protocol/transport/socket";
 import { RTCConnectionProvider } from "./provider/web-rtc";
 
+type ConnectOptions =
+  { binaryType?: "arraybuffer" | "blob" };
+
 type ClientOptions =
   | {| url?: string |}
   | { provider: ConnectionProvider, transport: Transport };
@@ -71,11 +74,20 @@ export class Client {
   }
 
   async connect(
-    to: string = CLIENT_MASTER,
-    options?: { binaryType?: "arraybuffer" | "blob" }
+    to: string | ConnectOptions = CLIENT_MASTER,
+    options?: ConnectOptions
   ): Promise<Connection> {
-    // Establish a UDP connection with the remote client.
-    return await this._provider.create(to, options);
+    let args: [string] | [string, ConnectOptions];
+
+    if (typeof to === "object" && to !== null) {
+      args = [CLIENT_MASTER, to];
+    } else if (typeof options === "object" && options !== null) {
+      args = [to, options];
+    } else {
+      args = [to];
+    }
+
+    return await this._provider.create(...args);
   }
 
   close(id: string) {

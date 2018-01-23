@@ -6,7 +6,7 @@ import Connection from "./connection.mock";
 
 export default (): ConnectionProvider => {
   return {
-    create: async () => Connection(),
+    create: jest.fn(async () => Connection()),
     close: jest.fn()
   };
 };
