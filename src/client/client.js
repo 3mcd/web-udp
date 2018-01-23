@@ -11,8 +11,7 @@ import { CLIENT_MASTER } from "../const";
 import WebSocketTransport from "../protocol/transport/socket";
 import { RTCConnectionProvider } from "./provider/web-rtc";
 
-type ConnectOptions =
-  { binaryType?: "arraybuffer" | "blob" };
+type ConnectOptions = { binaryType?: "arraybuffer" | "blob" };
 
 type ClientOptions =
   | {| url?: string |}

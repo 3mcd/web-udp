@@ -31,7 +31,10 @@ describe("Client", () => {
 
     client.connect(options);
 
-    expect(provider.create).toHaveBeenCalledWith(CLIENT_MASTER, options);
+    expect(provider.create).toHaveBeenCalledWith(
+      CLIENT_MASTER,
+      options
+    );
   });
 
   it("attempts to connect to the specified client when given a single string argument", () => {

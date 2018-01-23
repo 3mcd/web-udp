@@ -24,6 +24,7 @@
     "lint-staged": "^5.0.0",
     "mock-socket": "^7.1.0",
     "prettier": "^1.8.2",
+    "puppeteer": "^1.0.0",
     "rollup": "^0.51.8",
     "rollup-plugin-babel": "^3.0.2",
     "rollup-plugin-commonjs": "^8.2.6",
