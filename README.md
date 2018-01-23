@@ -4,8 +4,6 @@ web-udp is a library used to establish UDP connections in Node/browser environme
 
 The library is currently implemented as an abstraction on top of unreliable RTCDataChannels. Since WebRTC is a dependency, a signaling server is included with the package to facilitate connections between clients. Client/server connections are available with the help of the [wrtc](https://www.npmjs.com/package/wrtc) package.
 
-This project is a WIP.
-
 ## API
 
 ```js
