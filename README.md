@@ -13,7 +13,7 @@ Signal<T>#subscribe(subscriber: (data: *) => *)
 Signal<T>#unsubscribe(subscriber: (data: *) => *)
 
 Client(options?: { url?: string })
-Client#connect(to?: string = "__MASTER__"): Promise<Connection>
+Client#connect(to?: string = "__MASTER__", options?: { binaryType?: "arraybuffer" | "blob" }): Promise<Connection>
 Client#route(): Promise<string>
 Client#connections: Signal<Connection>
 
