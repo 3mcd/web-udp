@@ -12,6 +12,9 @@ export interface Connection {
 }
 
 export interface ConnectionProvider {
-  create(pid: string, cid: string): Promise<Connection>;
+  create(
+    pid: string,
+    options?: { binaryType?: "arraybuffer" | "blob" }
+  ): Promise<Connection>;
   close(pid: string): void;
 }

@@ -5,6 +5,7 @@ import type { RTCIceCandidate } from "wrtc";
 import type { ConnectionProvider, Connection } from "..";
 import type { Message, Transport } from "../../../protocol";
 
+import shortid from "shortid";
 import { RTCPeerConnection, RTCSessionDescription } from "wrtc";
 
 import RTCPeer from "./rtc-peer";
@@ -46,9 +47,13 @@ export default class RTCConnectionProvider
   /**
    * Establish a UDP connection with a remote peer.
    */
-  async create(pid: string, cid: string): Promise<Connection> {
+  async create(
+    pid: string,
+    options?: { binaryType?: "arraybuffer" | "blob" }
+  ): Promise<Connection> {
+    const cid = shortid();
     const peer = this._peers[pid] || this._addPeer(pid);
-    const channel = peer.channel(cid);
+    const channel = peer.channel(cid, options);
     const sdp = await peer.offer();
 
     this._onPeerSDP(sdp, pid);

@@ -5,6 +5,7 @@ import type {
   PeerOptions
 } from "../../../../src/client/provider/web-rtc/rtc-peer";
 
+import { RTCSessionDescription } from "../../vendor/wrtc.mock";
 import Connection from "../connection.mock";
 
 export default (options: PeerOptions): Peer => {
@@ -17,8 +18,22 @@ export default (options: PeerOptions): Peer => {
       onICE({
         candidate: ""
       });
+
+      return Promise.resolve(
+        new RTCSessionDescription({
+          sdp: "",
+          type: "offer"
+        })
+      );
     }),
-    answer: jest.fn(),
+    answer: jest.fn(() =>
+      Promise.resolve(
+        new RTCSessionDescription({
+          sdp: "",
+          type: "answer"
+        })
+      )
+    ),
     setRemoteDescription: jest.fn(),
     addIceCandidate: jest.fn()
   };

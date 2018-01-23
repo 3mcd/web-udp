@@ -20,9 +20,12 @@ const DATA_CHANNEL_OPTIONS = {
 };
 
 export interface Peer {
-  channel(string): Promise<Connection>;
-  offer(): void;
-  answer(RTCSessionDescription): void;
+  channel(
+    string,
+    options?: { binaryType?: "arraybuffer" | "blob" }
+  ): Promise<Connection>;
+  offer(): Promise<RTCSessionDescription>;
+  answer(RTCSessionDescription): Promise<RTCSessionDescription>;
   setRemoteDescription(RTCSessionDescription): void;
   addIceCandidate(RTCIceCandidate): void;
 }
@@ -67,12 +70,17 @@ export default class RTCPeer implements Peer {
     );
   }
 
-  channel(cid: string): Promise<Connection> {
+  channel(
+    cid: string,
+    options: { binaryType?: "arraybuffer" | "blob" } = {}
+  ): Promise<Connection> {
     // Create a RTCDataChannel with the id as the label.
     const dataChannel = this._peerConnection.createDataChannel(
       cid,
       DATA_CHANNEL_OPTIONS
     );
+
+    dataChannel.binaryType = options.binaryType || "arraybuffer";
 
     return new Promise(resolve => {
       const handle = () => {

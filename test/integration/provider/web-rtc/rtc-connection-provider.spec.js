@@ -24,7 +24,9 @@ describe("RTCConnectionProvider.RTCPeer", () => {
 
   describe("create()", () => {
     it("sends offers created by peers", async () => {
-      const connection = provider.create("foo", "0");
+      const connection = provider.create("foo", {
+        binaryType: "arraybuffer"
+      });
 
       await tick();
 

@@ -27,7 +27,9 @@ describe("RTCConnectionProvider", () => {
   });
 
   it("sends ICE data broadcast by peer instances", () => {
-    const connection = webRtcConnectionProvider.create("foo", "0");
+    const connection = webRtcConnectionProvider.create("foo", {
+      binaryType: "arraybuffer"
+    });
 
     expect(transport.send).toHaveBeenCalledWith({
       pid: "foo",

@@ -70,11 +70,12 @@ export class Client {
     return this._route;
   }
 
-  async connect(to: string = CLIENT_MASTER): Promise<Connection> {
-    // Create an id for this connection.
-    const cid = shortid();
+  async connect(
+    to: string = CLIENT_MASTER,
+    options?: { binaryType?: "arraybuffer" | "blob" }
+  ): Promise<Connection> {
     // Establish a UDP connection with the remote client.
-    return await this._provider.create(to, cid);
+    return await this._provider.create(to, options);
   }
 
   close(id: string) {

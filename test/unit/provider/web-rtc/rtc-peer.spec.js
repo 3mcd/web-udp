@@ -31,7 +31,9 @@ describe("RTCPeer", () => {
 
   describe("channel()", () => {
     it("resolves with a Connection when underlying datachannel opens", async () => {
-      const connect = peer.channel("foo");
+      const connect = peer.channel("foo", {
+        binaryType: "arraybuffer"
+      });
 
       // Trigger "open" by setting the remote/local description of
       // the mock manually.
@@ -48,7 +50,9 @@ describe("RTCPeer", () => {
     });
 
     it("emits DataChannel when underlying datachannel opens", async () => {
-      const connect = peer.channel("foo");
+      const connect = peer.channel("foo", {
+        binaryType: "arraybuffer"
+      });
 
       // Trigger "open" by setting the remote/local description of
       // the mock manually.

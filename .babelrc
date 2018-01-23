@@ -7,6 +7,7 @@
       "plugins": [
         "transform-flow-strip-types",
         "transform-class-properties",
+        "transform-object-rest-spread",
         "transform-runtime", 
       ]
     },
@@ -22,6 +23,7 @@
       "plugins": [
         "transform-flow-strip-types",
         "transform-class-properties",
+        "transform-object-rest-spread",
         ["transform-runtime", {helpers: false, polyfill: false}],
         "external-helpers"
       ]
