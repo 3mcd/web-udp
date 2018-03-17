@@ -3,8 +3,6 @@
 import type { Transport } from "@web-udp/protocol";
 import type { Connection, ConnectionProvider } from "./provider";
 
-import shortid from "shortid";
-
 import {
   CLIENT_MASTER,
   Signal,

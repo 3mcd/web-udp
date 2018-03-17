@@ -4,7 +4,8 @@
   "description": "Node signaling server for the @web-udp/client package",
   "main": "lib/index.js",
   "scripts": {
-    "build": "node ../../build"
+    "build": "node ../../build",
+    "prepare": "npm run build"
   },
   "author": "Eric.McDaniel <eric.g.mcdaniel@gmail.com>",
   "license": "ISC",

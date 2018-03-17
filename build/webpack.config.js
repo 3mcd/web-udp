@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const FlowWebpackPlugin = require("flow-webpack-plugin");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 module.exports = {
   context: process.cwd(),
@@ -16,5 +17,11 @@ module.exports = {
       }
     ]
   },
-  plugins: [new webpack.NamedModulesPlugin(), new FlowWebpackPlugin()]
+  plugins: [
+    new webpack.NamedModulesPlugin(),
+    new FlowWebpackPlugin(),
+    new BundleAnalyzerPlugin({
+      analyzerMode: "static"
+    })
+  ]
 };

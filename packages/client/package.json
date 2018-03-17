@@ -5,7 +5,8 @@
   "main": "dist/index.js",
   "browser": "dist/index.browser.js",
   "scripts": {
-    "build": "node ../../build"
+    "build": "node ../../build",
+    "prepare": "npm run build"
   },
   "author": "Eric McDaniel <eric.g.mcdaniel@gmail.com>",
   "license": "ISC",

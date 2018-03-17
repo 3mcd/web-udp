@@ -12,6 +12,9 @@ module.exports = [
       filename: "index.browser.js",
       library: "Udp",
       libraryTarget: "umd"
+    },
+    node: {
+      crypto: "empty"
     }
   }),
   merge(common, {

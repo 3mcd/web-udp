@@ -25,6 +25,7 @@
     "prettier": "^1.8.2",
     "puppeteer": "^1.2.0",
     "webpack": "^4.1.1",
+    "webpack-bundle-analyzer": "^2.11.1",
     "webpack-merge": "^4.1.2",
     "webpack-node-externals": "^1.6.0"
   },
