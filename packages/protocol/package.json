@@ -1,6 +1,6 @@
 {
   "name": "@web-udp/protocol",
-  "version": "2.0.1-2",
+  "version": "2.0.0",
   "description": "A protocol for establishing connections between @web-udp/client peers",
   "main": "dist/index.js",
   "scripts": {
@@ -12,5 +12,8 @@
   "dependencies": {
     "shortid": "^2.2.8",
     "wrtc": "^0.0.67"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
