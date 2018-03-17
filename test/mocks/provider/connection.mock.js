@@ -1,8 +1,8 @@
 // @flow
 
-import type { Connection } from "../../../src/client/provider";
+import type { Connection } from "../../../packages/client/src/provider";
 
-import { Signal } from "../../../src/signal";
+import { Signal } from "../../../packages/protocol";
 
 export default (): Connection => {
   return {

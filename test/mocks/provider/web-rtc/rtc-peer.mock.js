@@ -3,7 +3,7 @@
 import type {
   Peer,
   PeerOptions
-} from "../../../../src/client/provider/web-rtc/rtc-peer";
+} from "../../../../packages/client/src/provider/web-rtc/rtc-peer";
 
 import { RTCSessionDescription } from "../../vendor/wrtc.mock";
 import Connection from "../connection.mock";

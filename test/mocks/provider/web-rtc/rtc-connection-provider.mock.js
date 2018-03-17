@@ -1,6 +1,6 @@
 // @flow
 
-import type { ConnectionProvider } from "../../../../src/client/provider";
+import type { ConnectionProvider } from "../../../../packages/client/src/provider";
 
 import Connection from "../connection.mock";
 

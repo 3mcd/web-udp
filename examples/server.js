@@ -1,6 +1,6 @@
 const http = require("http");
 const server = http.createServer();
-const { Server } = require("../lib/server");
+const { Server } = require("../packages/server/lib");
 
 const udp = new Server({
   server

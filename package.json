@@ -1,42 +1,45 @@
 {
-  "author": "",
-  "browser": {
-    "client": "./dist/client.js",
-    "server": "./lib/server.js"
-  },
-  "dependencies": {
-    "shortid": "^2.2.8",
-    "wrtc": "0.0.63",
-    "ws": "^3.3.2"
-  },
-  "description": "SCTP data channels in the browser",
+  "author": "Eric McDaniel <eric.g.mcdaniel@gmail.com>",
+  "description": "",
   "devDependencies": {
-    "babel-jest": "^21.2.0",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-flow-strip-types": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.6.1",
+    "@babel/core": "^7.0.0-beta.42",
+    "@babel/plugin-external-helpers": "^7.0.0-beta.42",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.42",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.42",
+    "@babel/plugin-transform-flow-strip-types": "^7.0.0-beta.42",
+    "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.42",
+    "@babel/plugin-transform-runtime": "^7.0.0-beta.42",
+    "@babel/preset-env": "^7.0.0-beta.42",
+    "@babel/runtime": "^7.0.0-beta.42",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.0.0-alpha.0",
+    "babel-loader": "^8.0.0-beta.2",
     "flow-bin": "^0.59.0",
+    "flow-webpack-plugin": "^1.2.0",
+    "html-webpack-plugin": "^3.0.6",
     "husky": "^0.14.3",
-    "jest": "^22.1.4",
+    "jest": "^21.3.0-beta.15",
+    "lerna": "^2.9.0",
     "lint-staged": "^5.0.0",
     "mock-socket": "^7.1.0",
     "prettier": "^1.8.2",
-    "puppeteer": "^1.0.0",
-    "rollup": "^0.51.8",
-    "rollup-plugin-babel": "^3.0.2",
-    "rollup-plugin-commonjs": "^8.2.6",
-    "rollup-plugin-node-resolve": "3.0.0",
-    "rollup-plugin-uglify": "^2.0.1"
+    "puppeteer": "^1.2.0",
+    "webpack": "^4.1.1",
+    "webpack-merge": "^4.1.2",
+    "webpack-node-externals": "^1.6.0"
   },
   "jest": {
     "collectCoverageFrom": [
       "!<rootDir>/node_modules/",
       "!<rootDir>/test/",
       "src/**/*.{js,jsx}"
-    ]
+    ],
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "globals": {
+      "NODE_ENV": "test"
+    }
   },
   "license": "ISC",
   "lint-staged": {
@@ -48,15 +51,12 @@
   "main": "lib/server.js",
   "name": "web-udp",
   "scripts": {
-    "build": "npm run build:client & npm run build:server",
-    "build:client": "node build/client.js",
-    "build:server": "node build/server.js",
     "precommit": "lint-staged",
     "prepush": "npm test",
-    "prepublish": "npm run build",
     "start": "node examples/server.js",
-    "test": "flow && jest",
+    "test": "jest && flow",
     "test-coverage": "jest --verbose --coverage"
   },
-  "version": "1.2.0"
+  "version": "1.2.0",
+  "dependencies": {}
 }

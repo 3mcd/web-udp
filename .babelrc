@@ -2,18 +2,19 @@
   "env": {
     "test": {
       "presets": [
-        "env"
+        ["@babel/preset-env"]
       ],
       "plugins": [
-        "transform-flow-strip-types",
-        "transform-class-properties",
-        "transform-object-rest-spread",
-        "transform-runtime", 
+        "@babel/plugin-transform-modules-commonjs",
+        "@babel/plugin-transform-flow-strip-types",
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-proposal-object-rest-spread",
+        "@babel/plugin-transform-runtime"
       ]
     },
     "development": {
       "presets": [
-        ["env", {
+        ["@babel/preset-env", {
           targets: {
             browsers: ["last 2 versions"]
           },
@@ -21,11 +22,11 @@
         }],
       ],
       "plugins": [
-        "transform-flow-strip-types",
-        "transform-class-properties",
-        "transform-object-rest-spread",
-        ["transform-runtime", {helpers: false, polyfill: false}],
-        "external-helpers"
+        "@babel/plugin-transform-modules-commonjs",
+        "@babel/plugin-transform-flow-strip-types",
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-proposal-object-rest-spread",
+        "@babel/plugin-transform-runtime"
       ]
     }
   }

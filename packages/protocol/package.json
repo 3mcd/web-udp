@@ -1,0 +1,15 @@
+{
+  "name": "@web-udp/protocol",
+  "version": "2.0.0",
+  "description": "A protocol for establishing connections between @web-udp/client peers",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "node ../../build"
+  },
+  "author": "Eric McDaniel <eric.mcdaniel@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "shortid": "^2.2.8",
+    "wrtc": "^0.0.67"
+  }
+}

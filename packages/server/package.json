@@ -1,0 +1,17 @@
+{
+  "name": "@web-udp/server",
+  "version": "2.0.0",
+  "description": "Node signaling server for the @web-udp/client package",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "node ../../build"
+  },
+  "author": "Eric.McDaniel <eric.g.mcdaniel@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "@web-udp/client": "^2.0.0",
+    "@web-udp/protocol": "^2.0.0",
+    "wrtc": "^0.0.67",
+    "ws": "^5.0.0"
+  }
+}

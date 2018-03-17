@@ -1,10 +1,10 @@
 // @flow
 
-import type { Message } from "../../../src/protocol/message";
+import type { Message } from "../../../packages/protocol/src";
 import type {
   MessageHandler,
   Transport
-} from "../../../src/protocol";
+} from "../../../packages/protocol";
 
 export type TransportMockUtil = {
   __provide__: (message: Message) => mixed
