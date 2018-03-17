@@ -1,7 +1,8 @@
 {
   "name": "@web-udp/protocol",
   "version": "2.0.0",
-  "description": "A protocol for establishing connections between @web-udp/client peers",
+  "description":
+    "A protocol for establishing connections between @web-udp/client peers",
   "main": "dist/index.js",
   "scripts": {
     "build": "node ../../build"

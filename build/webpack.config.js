@@ -16,8 +16,5 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new webpack.NamedModulesPlugin(),
-    new FlowWebpackPlugin()
-  ]
+  plugins: [new webpack.NamedModulesPlugin(), new FlowWebpackPlugin()]
 };

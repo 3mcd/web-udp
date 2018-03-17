@@ -16,9 +16,7 @@ module.exports = [
   }),
   merge(common, {
     target: "node",
-    externals: [
-      externals()
-    ],
+    externals: [externals()],
     entry: "./src/index",
     output: {
       path: path.resolve("dist"),

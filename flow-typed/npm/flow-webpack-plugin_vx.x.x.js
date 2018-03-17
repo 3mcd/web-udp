@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'flow-webpack-plugin' {
+declare module "flow-webpack-plugin" {
   declare module.exports: any;
 }
 
@@ -22,18 +22,18 @@ declare module 'flow-webpack-plugin' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'flow-webpack-plugin/dist/index' {
+declare module "flow-webpack-plugin/dist/index" {
   declare module.exports: any;
 }
 
-declare module 'flow-webpack-plugin/src/index' {
+declare module "flow-webpack-plugin/src/index" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module 'flow-webpack-plugin/dist/index.js' {
-  declare module.exports: $Exports<'flow-webpack-plugin/dist/index'>;
+declare module "flow-webpack-plugin/dist/index.js" {
+  declare module.exports: $Exports<"flow-webpack-plugin/dist/index">;
 }
-declare module 'flow-webpack-plugin/src/index.js' {
-  declare module.exports: $Exports<'flow-webpack-plugin/src/index'>;
+declare module "flow-webpack-plugin/src/index.js" {
+  declare module.exports: $Exports<"flow-webpack-plugin/src/index">;
 }

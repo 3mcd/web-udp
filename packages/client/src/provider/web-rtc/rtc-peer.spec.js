@@ -1,6 +1,8 @@
 // @flow
 
-jest.mock("wrtc", () => require("../../../../../test/mocks/vendor/wrtc.mock"));
+jest.mock("wrtc", () =>
+  require("../../../../../test/mocks/vendor/wrtc.mock")
+);
 
 import RTCPeer from "./rtc-peer";
 

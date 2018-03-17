@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'webpack-node-externals' {
+declare module "webpack-node-externals" {
   declare module.exports: any;
 }
 
@@ -23,11 +23,10 @@ declare module 'webpack-node-externals' {
  * needed.
  */
 
-
 // Filename aliases
-declare module 'webpack-node-externals/index' {
-  declare module.exports: $Exports<'webpack-node-externals'>;
+declare module "webpack-node-externals/index" {
+  declare module.exports: $Exports<"webpack-node-externals">;
 }
-declare module 'webpack-node-externals/index.js' {
-  declare module.exports: $Exports<'webpack-node-externals'>;
+declare module "webpack-node-externals/index.js" {
+  declare module.exports: $Exports<"webpack-node-externals">;
 }

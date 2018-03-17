@@ -20,7 +20,10 @@ declare module "prettier" {
     | "vue";
 
   declare type PrettierParser = {
-    [name: PrettierParserName]: (text: string, options?: Object) => AST
+    [name: PrettierParserName]: (
+      text: string,
+      options?: Object
+    ) => AST
   };
 
   declare type CustomParser = (
@@ -165,14 +168,23 @@ declare module "prettier" {
   declare type Prettier = {|
     format: (source: string, options?: Options) => string,
     check: (source: string, options?: Options) => boolean,
-    formatWithCursor: (source: string, options: CursorOptions) => CursorResult,
+    formatWithCursor: (
+      source: string,
+      options: CursorOptions
+    ) => CursorResult,
     resolveConfig: {
-      (filePath: string, options?: ResolveConfigOptions): Promise<?Options>,
-      sync(filePath: string, options?: ResolveConfigOptions): Promise<?Options>
+      (
+        filePath: string,
+        options?: ResolveConfigOptions
+      ): Promise<?Options>,
+      sync(
+        filePath: string,
+        options?: ResolveConfigOptions
+      ): Promise<?Options>
     },
     clearConfigCache: () => void,
     getSupportInfo: (version?: string) => SupportInfo
   |};
 
-  declare export default Prettier;
+  declare export default Prettier
 }

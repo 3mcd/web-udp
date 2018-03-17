@@ -132,10 +132,13 @@ type EnzymeMatchersType = {
   toExist(): void,
   toHaveClassName(className: string): void,
   toHaveHTML(html: string): void,
-  toHaveProp: ((propKey: string, propValue?: any) => void) & ((props: Object) => void),
+  toHaveProp: ((propKey: string, propValue?: any) => void) &
+    ((props: Object) => void),
   toHaveRef(refName: string): void,
-  toHaveState: ((stateKey: string, stateValue?: any) => void) & ((state: Object) => void),
-  toHaveStyle: ((styleKey: string, styleValue?: any) => void) & ((style: Object) => void),
+  toHaveState: ((stateKey: string, stateValue?: any) => void) &
+    ((state: Object) => void),
+  toHaveStyle: ((styleKey: string, styleValue?: any) => void) &
+    ((style: Object) => void),
   toHaveTagName(tagName: string): void,
   toHaveText(text: string): void,
   toIncludeText(text: string): void,
@@ -280,7 +283,9 @@ type JestExpectType = {
    * Alias: .toThrowError
    */
   toThrow(message?: string | Error | Class<Error> | RegExp): void,
-  toThrowError(message?: string | Error | Class<Error> | RegExp): void,
+  toThrowError(
+    message?: string | Error | Class<Error> | RegExp
+  ): void,
   /**
    * Use .toThrowErrorMatchingSnapshot to test that a function throws a error
    * matching the most recent snapshot when it is called.

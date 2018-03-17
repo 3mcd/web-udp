@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module '@babel/plugin-external-helpers' {
+declare module "@babel/plugin-external-helpers" {
   declare module.exports: any;
 }
 
@@ -22,11 +22,13 @@ declare module '@babel/plugin-external-helpers' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module '@babel/plugin-external-helpers/lib/index' {
+declare module "@babel/plugin-external-helpers/lib/index" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module '@babel/plugin-external-helpers/lib/index.js' {
-  declare module.exports: $Exports<'@babel/plugin-external-helpers/lib/index'>;
+declare module "@babel/plugin-external-helpers/lib/index.js" {
+  declare module.exports: $Exports<
+    "@babel/plugin-external-helpers/lib/index"
+  >;
 }

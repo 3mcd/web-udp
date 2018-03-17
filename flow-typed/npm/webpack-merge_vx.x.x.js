@@ -13,7 +13,7 @@
  * https://github.com/flowtype/flow-typed
  */
 
-declare module 'webpack-merge' {
+declare module "webpack-merge" {
   declare module.exports: any;
 }
 
@@ -22,39 +22,41 @@ declare module 'webpack-merge' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'webpack-merge/lib/index' {
+declare module "webpack-merge/lib/index" {
   declare module.exports: any;
 }
 
-declare module 'webpack-merge/lib/join-arrays-smart' {
+declare module "webpack-merge/lib/join-arrays-smart" {
   declare module.exports: any;
 }
 
-declare module 'webpack-merge/lib/join-arrays' {
+declare module "webpack-merge/lib/join-arrays" {
   declare module.exports: any;
 }
 
-declare module 'webpack-merge/lib/unique' {
+declare module "webpack-merge/lib/unique" {
   declare module.exports: any;
 }
 
-declare module 'webpack-merge/lib/unite-rules' {
+declare module "webpack-merge/lib/unite-rules" {
   declare module.exports: any;
 }
 
 // Filename aliases
-declare module 'webpack-merge/lib/index.js' {
-  declare module.exports: $Exports<'webpack-merge/lib/index'>;
+declare module "webpack-merge/lib/index.js" {
+  declare module.exports: $Exports<"webpack-merge/lib/index">;
 }
-declare module 'webpack-merge/lib/join-arrays-smart.js' {
-  declare module.exports: $Exports<'webpack-merge/lib/join-arrays-smart'>;
+declare module "webpack-merge/lib/join-arrays-smart.js" {
+  declare module.exports: $Exports<
+    "webpack-merge/lib/join-arrays-smart"
+  >;
 }
-declare module 'webpack-merge/lib/join-arrays.js' {
-  declare module.exports: $Exports<'webpack-merge/lib/join-arrays'>;
+declare module "webpack-merge/lib/join-arrays.js" {
+  declare module.exports: $Exports<"webpack-merge/lib/join-arrays">;
 }
-declare module 'webpack-merge/lib/unique.js' {
-  declare module.exports: $Exports<'webpack-merge/lib/unique'>;
+declare module "webpack-merge/lib/unique.js" {
+  declare module.exports: $Exports<"webpack-merge/lib/unique">;
 }
-declare module 'webpack-merge/lib/unite-rules.js' {
-  declare module.exports: $Exports<'webpack-merge/lib/unite-rules'>;
+declare module "webpack-merge/lib/unite-rules.js" {
+  declare module.exports: $Exports<"webpack-merge/lib/unite-rules">;
 }

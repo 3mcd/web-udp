@@ -5,7 +5,11 @@ import type { Connection, ConnectionProvider } from "./provider";
 
 import shortid from "shortid";
 
-import { CLIENT_MASTER, Signal, WebSocketTransport } from "@web-udp/protocol";
+import {
+  CLIENT_MASTER,
+  Signal,
+  WebSocketTransport
+} from "@web-udp/protocol";
 import { RTCConnectionProvider } from "./provider/web-rtc";
 
 type ConnectOptions = { binaryType?: "arraybuffer" | "blob" };

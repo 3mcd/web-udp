@@ -4,7 +4,13 @@ import type { Server as HTTPServer } from "http";
 import type { Connection } from "@web-udp/client";
 
 import WebSocket from "ws";
-import { Signal, Broker, CLIENT_MASTER, LocalTransport, WebSocketTransport } from "@web-udp/protocol";
+import {
+  Signal,
+  Broker,
+  CLIENT_MASTER,
+  LocalTransport,
+  WebSocketTransport
+} from "@web-udp/protocol";
 import { Client, RTCConnectionProvider } from "@web-udp/client";
 
 function createLocalClient(
@@ -30,7 +36,7 @@ function createLocalClient(
 }
 
 type ServerOptions = {
-  server: HTTPServer,
+  server: HTTPServer
 };
 
 // Server() sets up a signaling broker that can facilitate connections between
