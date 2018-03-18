@@ -4,7 +4,7 @@
   "description": "Node signaling server for the @web-udp/client package",
   "main": "lib/index.js",
   "scripts": {
-    "build": "node ../../build",
+    "build": "node ../../tools/build",
     "prepare": "npm run build"
   },
   "author": "Eric.McDaniel <eric.g.mcdaniel@gmail.com>",
@@ -14,8 +14,5 @@
     "@web-udp/protocol": "^2.0.0",
     "wrtc": "^0.0.67",
     "ws": "^5.0.0"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

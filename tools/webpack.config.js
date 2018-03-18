@@ -20,8 +20,8 @@ module.exports = {
   plugins: [
     new webpack.NamedModulesPlugin(),
     new FlowWebpackPlugin(),
-    new BundleAnalyzerPlugin({
-      analyzerMode: "static"
-    })
+    // new BundleAnalyzerPlugin({
+    //   analyzerMode: "static"
+    // })
   ]
 };

@@ -2,9 +2,9 @@ const path = require("path");
 const merge = require("webpack-merge");
 const externals = require("webpack-node-externals");
 
-const common = require("../../../build/webpack.config");
+const common = require("../../../tools/webpack.config");
 
-module.exports = [
+module.exports =
   merge(common, {
     entry: "./src/index",
     output: {
@@ -16,16 +16,4 @@ module.exports = [
     node: {
       crypto: "empty"
     }
-  }),
-  merge(common, {
-    target: "node",
-    externals: [externals()],
-    entry: "./src/index",
-    output: {
-      path: path.resolve("dist"),
-      filename: "index.js",
-      library: "Udp",
-      libraryTarget: "umd"
-    }
-  })
-];
+  });

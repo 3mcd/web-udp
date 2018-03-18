@@ -1,10 +1,11 @@
 {
   "name": "@web-udp/protocol",
   "version": "2.0.0",
-  "description": "A protocol for establishing connections between @web-udp/client peers",
-  "main": "dist/index.js",
+  "description": "Protocol library used in establishing connections between @web-udp/client peers",
+  "main": "lib/index.js",
+  "browser": "dist/index.js",
   "scripts": {
-    "build": "node ../../build",
+    "build": "node ../../tools/build",
     "prepare": "npm run build"
   },
   "author": "Eric McDaniel <eric.mcdaniel@gmail.com>",
@@ -12,8 +13,5 @@
   "dependencies": {
     "shortid": "^2.2.8",
     "wrtc": "^0.0.67"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

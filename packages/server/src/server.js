@@ -65,8 +65,6 @@ export class Server {
       connection => this.connections.dispatch(connection)
     );
 
-    // this.connections = this._master.connections;
-
     // Route signaling messages to/from clients.
     this._webSocketServer.on("connection", ws => {
       const id = this._broker.register(new WebSocketTransport(ws));
