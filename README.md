@@ -34,7 +34,7 @@ Server#connections: Signal<Connection>
 ```js
 // client.js
 
-import { Client } from "web-udp";
+import { Client } from "@web-udp/client";
 
 async function main() {
   const client = new Client();
@@ -49,7 +49,7 @@ async function main() {
 // server.js
 
 const server = require("http").createServer();
-const { Server } = require("web-udp");
+const { Server } = require("@web-udp/server");
 
 const udp = new Server({ server });
 
@@ -80,12 +80,17 @@ server.listen(8000);
 
 ### P2P
 
+```html
+<script src="/node_modules/@web-udp/client/dist/index.js"></script>
+<script src="client.js"></script>
+```
+
 ```js
 // client.js
 
 async function main() {
-  const left = new Client();
-  const right = new Client();
+  const left = new Udp.Client();
+  const right = new Udp.Client();
   const route = await left.route();
   const connection = await right.connect(route);
 
@@ -101,7 +106,7 @@ async function main() {
 // server.js
 
 const server = require("http").createServer();
-const { Server } = require("web-udp");
+const { Server } = require("web-udp/@server");
 
 Server({ server });
 
