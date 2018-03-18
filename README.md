@@ -81,6 +81,8 @@ server.listen(8000);
 ### P2P
 
 ```html
+<!-- index.html -->
+
 <script src="/node_modules/@web-udp/client/dist/index.js"></script>
 <script src="client.js"></script>
 ```
