@@ -3,7 +3,11 @@ const path = require("path");
 const fs = require("fs-extra");
 const Babel = require("@babel/core");
 
-module.exports = async (src, dest, options = { babel: Babel.loadOptions() }) => {
+module.exports = async (
+  src,
+  dest,
+  options = { babel: Babel.loadOptions() }
+) => {
   src = path.resolve(src);
   dest = path.resolve(dest);
 
@@ -18,16 +22,20 @@ module.exports = async (src, dest, options = { babel: Babel.loadOptions() }) => 
   });
 
   return Promise.all(files.map(_transform));
-}
+};
 
-async function transform (file, src, dest, { babel, onFile } = {}) {
-  const filePath = path.join(src, file)
-  const content = await fs.readFile(filePath)
-  const destPath = path.join(dest, file)
+async function transform(file, src, dest, { babel, onFile } = {}) {
+  const filePath = path.join(src, file);
+  const destPath = path.join(dest, file);
 
-  const { code } = Babel.transform(content.toString(), babel);
+  const res = Babel.transformFileSync(filePath, babel);
 
-  await fs.outputFile(destPath, code);
+  if (!res) {
+    // File was ignored.
+    return;
+  }
+
+  await fs.outputFile(destPath, res.code);
 
   if (typeof onFile === "function") {
     onFile(file);

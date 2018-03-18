@@ -35,7 +35,9 @@ describe("Server", () => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
 
-    await page.addScriptTag({ path: "./packages/client/dist/index.browser.js" });
+    await page.addScriptTag({
+      path: "./packages/client/dist/index.browser.js"
+    });
 
     return { browser, page };
   }

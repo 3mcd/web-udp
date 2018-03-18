@@ -19,7 +19,7 @@ module.exports = {
   },
   plugins: [
     new webpack.NamedModulesPlugin(),
-    new FlowWebpackPlugin(),
+    new FlowWebpackPlugin()
     // new BundleAnalyzerPlugin({
     //   analyzerMode: "static"
     // })

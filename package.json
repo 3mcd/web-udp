@@ -55,7 +55,9 @@
   "main": "lib/server.js",
   "name": "web-udp",
   "scripts": {
-    "clean": "lerna exec -- rm -rf ./lib/* ./dist/* && lerna clean --yes",
+    "clean":
+      "lerna exec -- rm -rf ./lib/* ./dist/* && lerna clean --yes",
+    "build": "npm run clean && lerna bootstrap && lerna run build",
     "precommit": "lint-staged",
     "prepush": "npm test",
     "start": "node examples/server.js",

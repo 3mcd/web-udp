@@ -23,9 +23,7 @@ const optionsError = {
 };
 
 module.exports = async dir => {
-  const config = require(
-    path.join(dir, "build/webpack.config")
-  );
+  const config = require(path.join(dir, "build/webpack.config"));
 
   const build = config => {
     return new Promise((resolve, reject) => {
