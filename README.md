@@ -7,8 +7,8 @@ The library is currently implemented as an abstraction on top of unreliable RTCD
 ## API
 
 ```js
-Signal<T>#subscribe(subscriber: (data: *) => *)
-Signal<T>#unsubscribe(subscriber: (data: *) => *)
+Signal<T>#subscribe(subscriber: T => *)
+Signal<T>#unsubscribe(subscriber: T => *)
 
 Client(options?: { url?: string })
 Client#connect(to?: string = "__MASTER__", options?: { binaryType?: "arraybuffer" | "blob" }): Promise<Connection>
@@ -108,7 +108,7 @@ async function main() {
 // server.js
 
 const server = require("http").createServer();
-const { Server } = require("web-udp/@server");
+const { Server } = require("@web-udp/server");
 
 Server({ server });
 
