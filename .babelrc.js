@@ -7,8 +7,8 @@ module.exports = {
         "@babel/plugin-transform-flow-strip-types",
         "@babel/plugin-proposal-class-properties",
         "@babel/plugin-proposal-object-rest-spread",
-        "@babel/plugin-transform-runtime"
-      ]
+        "@babel/plugin-transform-runtime",
+      ],
     },
     development: {
       presets: [
@@ -16,11 +16,11 @@ module.exports = {
           "@babel/preset-env",
           {
             targets: {
-              browsers: ["last 2 versions"]
+              browsers: ["last 2 versions"],
             },
-            modules: false
-          }
-        ]
+            modules: false,
+          },
+        ],
       ],
       plugins: [
         "@babel/plugin-transform-modules-commonjs",
@@ -29,10 +29,10 @@ module.exports = {
         "@babel/plugin-proposal-object-rest-spread",
         [
           "@babel/plugin-transform-runtime",
-          { helpers: false, polyfill: false }
-        ]
+          { helpers: false, polyfill: false },
+        ],
       ],
-      ignore: [/spec\.js$/]
-    }
-  }
-};
+      ignore: [/spec\.js$/],
+    },
+  },
+}

@@ -1,3 +1,3 @@
 export {
-  default as RTCConnectionProvider
-} from "./rtc-connection-provider";
+  default as RTCConnectionProvider,
+} from "./rtc-connection-provider"

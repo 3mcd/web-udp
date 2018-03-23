@@ -1,6 +1,6 @@
 // @flow
 
-import type { Signal, Message } from "@web-udp/protocol";
+import type { Signal, Message } from "@web-udp/protocol"
 
 export interface Connection {
   send(mixed): void;
@@ -13,7 +13,7 @@ export interface Connection {
 export interface ConnectionProvider {
   create(
     pid: string,
-    options?: { binaryType?: "arraybuffer" | "blob" }
+    options?: { binaryType?: "arraybuffer" | "blob" },
   ): Promise<Connection>;
   close(pid: string): void;
 }

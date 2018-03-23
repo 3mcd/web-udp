@@ -1,8 +1,8 @@
-const path = require("path");
-const merge = require("webpack-merge");
-const externals = require("webpack-node-externals");
+const path = require("path")
+const merge = require("webpack-merge")
+const externals = require("webpack-node-externals")
 
-const common = require("../../../tools/webpack.config");
+const common = require("../../../tools/webpack.config")
 
 module.exports = merge(common, {
   entry: "./src/index",
@@ -10,9 +10,9 @@ module.exports = merge(common, {
     path: path.resolve("dist"),
     filename: "index.browser.js",
     library: "Udp",
-    libraryTarget: "umd"
+    libraryTarget: "umd",
   },
   node: {
-    crypto: "empty"
-  }
-});
+    crypto: "empty",
+  },
+})

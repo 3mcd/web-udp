@@ -49,7 +49,7 @@
   "lint-staged": {
     "*.{js,jsx,json,css}": [
       "git add",
-      "prettier --print-width=70 --write"
+      "prettier --trailing-comma=all --print-width=70 --no-semi --write"
     ]
   },
   "main": "lib/server.js",

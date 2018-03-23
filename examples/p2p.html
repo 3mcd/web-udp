@@ -7,34 +7,34 @@
   <a id="connect" href="">Connect</a>
   <script type="text/javascript" src="../packages/client/dist/index.browser.js"></script>
   <script type="text/javascript">
-    const client = new Udp.Client({ url: "localhost:4000" });
+    const client = new Udp.Client({ url: "localhost:4000" })
 
     client.connections.subscribe(
       ({ messages }) => {
         messages.subscribe(message => {
-          const el = document.createElement("div");
-          el.textContent = message;
-          document.body.appendChild(el);
-        });
+          const el = document.createElement("div")
+          el.textContent = message
+          document.body.appendChild(el)
+        })
       }
-    );
+    )
 
     client.route().then(route =>
       document.getElementById("connect").href =
         `${location.href.split("?")[0]}?route=${route}`
-    );
+    )
 
-    const match = location.search.match(/route=(.*)/);
+    const match = location.search.match(/route=(.*)/)
 
     if (match) {
       client
         .connect(match[1])
         .then(
           ({ send, messages, closed }) => {
-            send("HELLO");
-            closed.subscribe(() => console.log("CLOSE"));
+            send("HELLO")
+            closed.subscribe(() => console.log("CLOSE"))
           }
-        );
+        )
     }
   </script>
 </body>

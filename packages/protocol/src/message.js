@@ -1,63 +1,63 @@
 // @flow
 
-import type { RTCIceCandidate, RTCSessionDescription } from "wrtc";
+import type { RTCIceCandidate, RTCSessionDescription } from "wrtc"
 
 type Route = {
   type: "ROUTE",
-  route: string
-};
+  route: string,
+}
 
 type OfferClient = {
   type: "OFFER_CLIENT",
   pid: string,
   payload: {
-    sdp: RTCSessionDescription
-  }
-};
+    sdp: RTCSessionDescription,
+  },
+}
 
 type Offer = {
   type: "OFFER",
   src: string,
   payload: {
-    sdp: RTCSessionDescription
-  }
-};
+    sdp: RTCSessionDescription,
+  },
+}
 
 type AnswerClient = {
   type: "ANSWER_CLIENT",
   pid: string,
   payload: {
-    sdp: RTCSessionDescription
-  }
-};
+    sdp: RTCSessionDescription,
+  },
+}
 
 type Answer = {
   type: "ANSWER",
   src: string,
   payload: {
-    sdp: RTCSessionDescription
-  }
-};
+    sdp: RTCSessionDescription,
+  },
+}
 
 type Ice = {
   type: "ICE_CLIENT",
   pid: string,
   payload: {
-    ice: RTCIceCandidate
-  }
-};
+    ice: RTCIceCandidate,
+  },
+}
 
 type IceClient = {
   type: "ICE",
   src: string,
   payload: {
-    ice: RTCIceCandidate
-  }
-};
+    ice: RTCIceCandidate,
+  },
+}
 
 type TransportClose = {
-  type: "TRANSPORT_CLOSE"
-};
+  type: "TRANSPORT_CLOSE",
+}
 
 export type Message =
   | Route
@@ -67,4 +67,4 @@ export type Message =
   | Answer
   | IceClient
   | Ice
-  | TransportClose;
+  | TransportClose

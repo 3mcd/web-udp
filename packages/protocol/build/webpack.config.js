@@ -1,9 +1,9 @@
-const path = require("path");
-const webpack = require("webpack");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const merge = require("webpack-merge");
+const path = require("path")
+const webpack = require("webpack")
+const HtmlWebpackPlugin = require("html-webpack-plugin")
+const merge = require("webpack-merge")
 
-const common = require("../../../tools/webpack.config");
+const common = require("../../../tools/webpack.config")
 
 module.exports = merge(common, {
   entry: "./src/index",
@@ -12,6 +12,6 @@ module.exports = merge(common, {
     path: path.resolve("dist"),
     filename: "index.js",
     library: "UdpProtocol",
-    libraryTarget: "umd"
-  }
-});
+    libraryTarget: "umd",
+  },
+})

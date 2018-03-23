@@ -1,3 +1,3 @@
 // @flow
 
-export const CLIENT_MASTER = "__MASTER__";
+export const CLIENT_MASTER = "__MASTER__"

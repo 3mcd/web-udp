@@ -2,127 +2,127 @@
 
 export type RTCSessionDescriptionOptions = {
   sdp: string,
-  type: "offer" | "answer"
-};
+  type: "offer" | "answer",
+}
 
 export type RTCIceCandidate = {
-  candidate: string
-};
+  candidate: string,
+}
 
 export type RTCIceCandidateEvent = {
-  candidate: RTCIceCandidate
-};
+  candidate: RTCIceCandidate,
+}
 
 export type RTCDataChannelEvent = {
-  channel: RTCDataChannel
-};
+  channel: RTCDataChannel,
+}
 
 export type RTCPeerConnectionMockUtil = {
   __triggerDataChannel__(RTCDataChannelEvent): void,
-  __triggerIceCandidate__(RTCIceCandidateEvent): void
-};
+  __triggerIceCandidate__(RTCIceCandidateEvent): void,
+}
 
 export class RTCSessionDescription {
-  sdp: string;
+  sdp: string
 
-  type: "offer" | "answer";
+  type: "offer" | "answer"
 
   constructor(options: RTCSessionDescriptionOptions) {
-    const { sdp, type } = options;
+    const { sdp, type } = options
 
-    this.sdp = sdp;
-    this.type = type;
+    this.sdp = sdp
+    this.type = type
   }
 }
 
 export class RTCDataChannel {
-  _onOpen: (...mixed[]) => mixed = () => {};
+  _onOpen: (...mixed[]) => mixed = () => {}
 
   constructor() {}
 
   addEventListener(event: string, cb: (...mixed[]) => mixed) {
     if (event === "open") {
-      this._onOpen = cb;
+      this._onOpen = cb
     }
   }
 
   removeEventListener(event: string, cb: (...mixed[]) => mixed) {
     if (event === "open") {
-      this._onOpen = () => {};
+      this._onOpen = () => {}
     }
   }
 
   send(data: mixed) {}
 
   __open__() {
-    this._onOpen();
+    this._onOpen()
   }
 }
 
 export class RTCPeerConnection {
-  _channels: RTCDataChannel[] = [];
+  _channels: RTCDataChannel[] = []
 
-  _local: RTCSessionDescription;
+  _local: RTCSessionDescription
 
-  _remote: RTCSessionDescription;
+  _remote: RTCSessionDescription
 
-  _onDataChannel: RTCDataChannelEvent => mixed;
+  _onDataChannel: RTCDataChannelEvent => mixed
 
-  _onIceCandidate: RTCIceCandidateEvent => mixed;
+  _onIceCandidate: RTCIceCandidateEvent => mixed
 
   addEventListener(event: string, cb: (...mixed[]) => mixed) {
     if (event === "icecandidate") {
-      this._onIceCandidate = cb;
+      this._onIceCandidate = cb
     } else if (event === "datachannel") {
-      this._onDataChannel = cb;
+      this._onDataChannel = cb
     }
   }
 
   async createAnswer() {
     return new RTCSessionDescription({
       sdp: "",
-      type: "answer"
-    });
+      type: "answer",
+    })
   }
 
   createDataChannel(): RTCDataChannel {
-    const channel = new RTCDataChannel();
+    const channel = new RTCDataChannel()
 
-    this._channels.push(channel);
+    this._channels.push(channel)
 
-    return channel;
+    return channel
   }
 
   async createOffer() {
     return new RTCSessionDescription({
       sdp: "",
-      type: "offer"
-    });
+      type: "offer",
+    })
   }
 
   setLocalDescription(sdp: RTCSessionDescription) {
-    this._local = sdp;
-    this.__tryOpen__();
+    this._local = sdp
+    this.__tryOpen__()
   }
 
   setRemoteDescription(sdp: RTCSessionDescription) {
-    this._remote = sdp;
-    this.__tryOpen__();
+    this._remote = sdp
+    this.__tryOpen__()
   }
 
   __tryOpen__() {
     if (!(this._remote && this._local)) {
-      return;
+      return
     }
 
-    this._channels.forEach(c => c.__open__());
+    this._channels.forEach(c => c.__open__())
   }
 
   __triggerDataChannel__(e: RTCDataChannelEvent) {
-    this._onDataChannel(e);
+    this._onDataChannel(e)
   }
 
   __triggerIceCandidate__(e: RTCIceCandidateEvent) {
-    this._onIceCandidate(e);
+    this._onIceCandidate(e)
   }
 }

@@ -34,48 +34,48 @@ Server#connections: Signal<Connection>
 ```js
 // client.js
 
-import { Client } from "@web-udp/client";
+import { Client } from "@web-udp/client"
 
 async function main() {
-  const client = new Client();
-  const { send, messages } = await client.connect();
+  const client = new Client()
+  const { send, messages } = await client.connect()
 
-  send("ping");
-  messages.subscribe(console.log);
+  send("ping")
+  messages.subscribe(console.log)
 }
 ```
 
 ```js
 // server.js
 
-const server = require("http").createServer();
-const { Server } = require("@web-udp/server");
+const server = require("http").createServer()
+const { Server } = require("@web-udp/server")
 
-const udp = new Server({ server });
+const udp = new Server({ server })
 
 udp.connections.subscribe(
   connection => {
-    const { send, messages, errors, closed } = connection;
+    const { send, messages, errors, closed } = connection
 
     messages.subscribe(
       message => {
         if (message === "ping") {
-          send("pong");
+          send("pong")
         }
       }
-    );
+    )
 
     closed.subscribe(
       () => console.log("A connection closed.")
-    );
+    )
 
     errors.subscribe(
       err => console.log(err)
-    );
+    )
   }
-);
+)
 
-server.listen(8000);
+server.listen(8000)
 ```
 
 ### P2P
@@ -91,26 +91,26 @@ server.listen(8000);
 // client.js
 
 async function main() {
-  const left = new Udp.Client();
-  const right = new Udp.Client();
-  const route = await left.route();
-  const connection = await right.connect(route);
+  const left = new Udp.Client()
+  const right = new Udp.Client()
+  const route = await left.route()
+  const connection = await right.connect(route)
 
   left.connections.subscribe(
     ({ messages }) => messages.subscribe(console.log)
-  );
+  )
 
-  connection.send("HELLO");
+  connection.send("HELLO")
 }
 ```
 
 ```js
 // server.js
 
-const server = require("http").createServer();
-const { Server } = require("@web-udp/server");
+const server = require("http").createServer()
+const { Server } = require("@web-udp/server")
 
-Server({ server });
+Server({ server })
 
-server.listen(8000);
+server.listen(8000)
 ```

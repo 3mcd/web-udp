@@ -1,8 +1,8 @@
 // @flow
 
-export type { Connection } from "./provider";
+export type { Connection } from "./provider"
 
-export { Client } from "./client";
+export { Client } from "./client"
 export {
-  default as RTCConnectionProvider
-} from "./provider/web-rtc/rtc-connection-provider";
+  default as RTCConnectionProvider,
+} from "./provider/web-rtc/rtc-connection-provider"

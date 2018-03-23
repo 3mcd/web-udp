@@ -1,31 +1,31 @@
-const http = require("http");
-const server = http.createServer();
-const { Server } = require("../packages/server/lib");
+const http = require("http")
+const server = http.createServer()
+const { Server } = require("../packages/server/lib")
 
 const udp = new Server({
-  server
-});
+  server,
+})
 
 udp.connections.subscribe(({ send, messages }) =>
   messages.subscribe(message => {
     if (message === "PING") {
-      setTimeout(() => send("PONG"), 1000);
+      setTimeout(() => send("PONG"), 1000)
     } else if (message === "PULL") {
-      setInterval(() => send("PUSH"), 1000);
+      setInterval(() => send("PUSH"), 1000)
     }
-  })
-);
+  }),
+)
 
-const client = udp.client();
+const client = udp.client()
 
 client.connect().then(({ send, messages }) => {
   messages.subscribe(message => {
-    console.log(message);
+    console.log(message)
     if (message === "PONG") {
-      send("PING");
+      send("PING")
     }
-  });
-  send("PING");
-});
+  })
+  send("PING")
+})
 
-server.listen(4000);
+server.listen(4000)

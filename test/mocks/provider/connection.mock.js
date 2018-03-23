@@ -1,8 +1,8 @@
 // @flow
 
-import type { Connection } from "../../../packages/client/src/provider";
+import type { Connection } from "../../../packages/client/src/provider"
 
-import { Signal } from "../../../packages/protocol";
+import { Signal } from "../../../packages/protocol"
 
 export default (): Connection => {
   return {
@@ -12,6 +12,6 @@ export default (): Connection => {
     close: jest.fn(),
     closed: new Signal(),
     errors: new Signal(),
-    messages: new Signal()
-  };
-};
+    messages: new Signal(),
+  }
+}

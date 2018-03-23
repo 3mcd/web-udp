@@ -1,9 +1,9 @@
-const path = require("path");
-const webpack = require("webpack");
+const path = require("path")
+const webpack = require("webpack")
 
 const options = {
-  colors: true
-};
+  colors: true,
+}
 
 const optionsError = {
   colors: true,
@@ -19,34 +19,32 @@ const optionsError = {
   reasons: false,
   source: false,
   errorDetails: true,
-  chunkOrigins: false
-};
+  chunkOrigins: false,
+}
 
 module.exports = async dir => {
-  const config = require(path.join(dir, "build/webpack.config"));
-
+  const config = require(path.join(dir, "build/webpack.config"))
   const build = config => {
     return new Promise((resolve, reject) => {
       webpack(
         Object.assign({ mode: "production" }, config),
         (err, stats) => {
           if (err) {
-            reject(err);
+            reject(err)
           }
 
           if (stats.hasErrors()) {
-            reject(stats.toString(optionsError));
+            reject(stats.toString(optionsError))
           }
 
-          resolve(stats);
-        }
-      );
-    });
-  };
-
-  let stats = await (Array.isArray(config)
+          resolve(stats)
+        },
+      )
+    })
+  }
+  const stats = await (Array.isArray(config)
     ? Promise.all(config.map(build))
-    : build(config));
+    : build(config))
 
-  return stats;
-};
+  return stats
+}

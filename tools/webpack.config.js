@@ -1,6 +1,6 @@
-const webpack = require("webpack");
-const FlowWebpackPlugin = require("flow-webpack-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const webpack = require("webpack")
+const FlowWebpackPlugin = require("flow-webpack-plugin")
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer")
 
 module.exports = {
   context: process.cwd(),
@@ -11,17 +11,17 @@ module.exports = {
         exclude: /node_modules\/(?!@web-udp)/,
         use: [
           {
-            loader: "babel-loader"
-          }
-        ]
-      }
-    ]
+            loader: "babel-loader",
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     new webpack.NamedModulesPlugin(),
-    new FlowWebpackPlugin()
+    new FlowWebpackPlugin(),
     // new BundleAnalyzerPlugin({
     //   analyzerMode: "static"
     // })
-  ]
-};
+  ],
+}

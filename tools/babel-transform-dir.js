@@ -1,43 +1,43 @@
-const globby = require("globby");
-const path = require("path");
-const fs = require("fs-extra");
-const Babel = require("@babel/core");
+const globby = require("globby")
+const path = require("path")
+const fs = require("fs-extra")
+const Babel = require("@babel/core")
 
 module.exports = async (
   src,
   dest,
-  options = { babel: Babel.loadOptions() }
+  options = { babel: Babel.loadOptions() },
 ) => {
-  src = path.resolve(src);
-  dest = path.resolve(dest);
+  src = path.resolve(src)
+  dest = path.resolve(dest)
 
   const _transform = file =>
     transform(file, src, dest, {
       filename: file,
-      ...options
-    });
+      ...options,
+    })
 
   const files = await globby("**/*.js", {
-    cwd: src
-  });
+    cwd: src,
+  })
 
-  return Promise.all(files.map(_transform));
-};
+  return Promise.all(files.map(_transform))
+}
 
 async function transform(file, src, dest, { babel, onFile } = {}) {
-  const filePath = path.join(src, file);
-  const destPath = path.join(dest, file);
+  const filePath = path.join(src, file)
+  const destPath = path.join(dest, file)
 
-  const res = Babel.transformFileSync(filePath, babel);
+  const res = Babel.transformFileSync(filePath, babel)
 
   if (!res) {
     // File was ignored.
-    return;
+    return
   }
 
-  await fs.outputFile(destPath, res.code);
+  await fs.outputFile(destPath, res.code)
 
   if (typeof onFile === "function") {
-    onFile(file);
+    onFile(file)
   }
 }

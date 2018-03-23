@@ -1,73 +1,73 @@
 // @flow
 
 jest.mock("./rtc-peer", () =>
-  require("../../../../../test/mocks/provider/web-rtc/rtc-peer.mock")
-);
+  require("../../../../../test/mocks/provider/web-rtc/rtc-peer.mock"),
+)
 
 jest.mock("wrtc", () =>
-  require("../../../../../test/mocks/vendor/wrtc.mock")
-);
+  require("../../../../../test/mocks/vendor/wrtc.mock"),
+)
 
-import type { Connection } from "../..";
+import type { Connection } from "../.."
 
-import RTCConnectionProvider from "./rtc-connection-provider";
+import RTCConnectionProvider from "./rtc-connection-provider"
 
-import Transport from "../../../../../test/mocks/protocol/transport.mock";
+import Transport from "../../../../../test/mocks/protocol/transport.mock"
 
-import { tick } from "../../../../../test/util/async";
+import { tick } from "../../../../../test/util/async"
 
 describe("RTCConnectionProvider", () => {
-  let transport;
-  let onConnection;
-  let webRtcConnectionProvider;
+  let transport
+  let onConnection
+  let webRtcConnectionProvider
 
   beforeEach(() => {
-    transport = Transport();
-    onConnection = jest.fn((connection: Connection) => {});
+    transport = Transport()
+    onConnection = jest.fn((connection: Connection) => {})
     webRtcConnectionProvider = new RTCConnectionProvider({
       transport,
-      onConnection
-    });
-  });
+      onConnection,
+    })
+  })
 
   it("sends ICE data broadcast by peer instances", () => {
     const connection = webRtcConnectionProvider.create("foo", {
-      binaryType: "arraybuffer"
-    });
+      binaryType: "arraybuffer",
+    })
 
     expect(transport.send).toHaveBeenCalledWith({
       pid: "foo",
       type: "ICE_CLIENT",
       payload: {
         ice: {
-          candidate: ""
-        }
-      }
-    });
-  });
-});
+          candidate: "",
+        },
+      },
+    })
+  })
+})
 
 describe("RTCConnectionProvider.RTCPeer", () => {
-  let transport;
-  let onConnection;
-  let provider;
+  let transport
+  let onConnection
+  let provider
 
   beforeEach(() => {
-    transport = Transport();
-    onConnection = jest.fn();
+    transport = Transport()
+    onConnection = jest.fn()
     provider = new RTCConnectionProvider({
       transport,
-      onConnection
-    });
-  });
+      onConnection,
+    })
+  })
 
   describe("create()", () => {
     it("sends offers created by peers", async () => {
       const connection = provider.create("foo", {
-        binaryType: "arraybuffer"
-      });
+        binaryType: "arraybuffer",
+      })
 
-      await tick();
+      await tick()
 
       expect(transport.send).toHaveBeenCalledWith({
         type: "OFFER_CLIENT",
@@ -75,12 +75,12 @@ describe("RTCConnectionProvider.RTCPeer", () => {
         payload: {
           sdp: {
             sdp: "",
-            type: "offer"
-          }
-        }
-      });
-    });
-  });
+            type: "offer",
+          },
+        },
+      })
+    })
+  })
 
   describe("handle()", () => {
     it("sends answer on remote offer", async () => {
@@ -90,12 +90,12 @@ describe("RTCConnectionProvider.RTCPeer", () => {
         payload: {
           sdp: {
             sdp: "",
-            type: "offer"
-          }
-        }
-      });
+            type: "offer",
+          },
+        },
+      })
 
-      await tick();
+      await tick()
 
       expect(transport.send).toHaveBeenCalledWith({
         type: "ANSWER_CLIENT",
@@ -103,10 +103,10 @@ describe("RTCConnectionProvider.RTCPeer", () => {
         payload: {
           sdp: {
             sdp: "",
-            type: "answer"
-          }
-        }
-      });
-    });
-  });
-});
+            type: "answer",
+          },
+        },
+      })
+    })
+  })
+})
