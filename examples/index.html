@@ -3,26 +3,56 @@
     <title>web-udp example</title>
   </head>
   <body>
+    <form>
+      <input type="text" name="username">
+      <input type="password" name="password">
+      <input type="submit">Submit</input>
+    </form>
     <script type="text/javascript" src="../packages/client/dist/index.browser.js"></script>
     <script type="text/javascript">
       const client = new Udp.Client({ url: "localhost:4000" })
+      const $username = document.querySelector("input[name=username]")
+      const $password = document.querySelector("input[name=password]")
+      const $submit = document.querySelector("input[type=submit]")
 
-      client.connect().then(
-        ({ send, messages, closed }) => {
-          send("PING")
-          send("PULL")
+      let currentConnection
 
-          messages.subscribe(m => {
-            const el = document.createElement("div")
-            el.textContent = m
-            document.body.appendChild(el)
-          })
+      function setConnection(connection) {
+        connection.send("PING")
+        connection.send("PULL")
 
-          closed.subscribe(
-            () => console.log("CLOSE")
-          )
+        connection.messages.subscribe(m => {
+          const el = document.createElement("div")
+          el.textContent = m
+          document.body.appendChild(el)
+        })
+
+        connection.closed.subscribe(
+          () => console.log("CLOSE")
+        )
+
+        currentConnection = connection
+      }
+
+      $submit.addEventListener("click", async (e) => {
+        e.preventDefault()
+
+        if (currentConnection) {
+          currentConnection.close()
+          currentConnection = null
         }
-      )
+
+        const credentials = {
+          username: $username.value,
+          password: $password.value,
+        }
+
+        const connection = await client.connect({
+          metadata: { credentials }
+        })
+
+        setConnection(connection)
+      })
     </script>
   </body>
 </html>

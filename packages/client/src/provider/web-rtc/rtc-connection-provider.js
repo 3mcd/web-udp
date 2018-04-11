@@ -49,7 +49,7 @@ export default class RTCConnectionProvider
    */
   async create(
     pid: string,
-    options?: { binaryType?: "arraybuffer" | "blob" },
+    options?: { binaryType?: "arraybuffer" | "blob", metadata?: any },
   ): Promise<Connection> {
     const cid = shortid()
     const peer = this._peers[pid] || this._addPeer(pid)

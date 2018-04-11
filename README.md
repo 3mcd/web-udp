@@ -11,7 +11,7 @@ Signal<T>#subscribe(subscriber: T => *)
 Signal<T>#unsubscribe(subscriber: T => *)
 
 Client(options?: { url?: string })
-Client#connect(to?: string = "__MASTER__", options?: { binaryType?: "arraybuffer" | "blob" }): Promise<Connection>
+Client#connect(to?: string = "__MASTER__", options?: { binaryType?: "arraybuffer" | "blob", metadata?: * }): Promise<Connection>
 Client#route(): Promise<string>
 Client#connections: Signal<Connection>
 
@@ -20,6 +20,7 @@ Connection#close(): void
 Connection#closed: Signal<>
 Connection#errors: Signal<{ err: string }>
 Connection#messages: Signal<*>
+Connection#metadata: any
 
 // Node
 Server({ server: http.Server })
@@ -31,14 +32,16 @@ Server#connections: Signal<Connection>
 
 ### Client/Server
 
+Below is a simple example of a ping server:
+
 ```js
 // client.js
 
 import { Client } from "@web-udp/client"
 
 async function main() {
-  const client = new Client()
-  const { send, messages } = await client.connect()
+  const udp = new Client()
+  const { send, messages } = await udp.connect()
 
   send("ping")
   messages.subscribe(console.log)
@@ -78,7 +81,48 @@ udp.connections.subscribe(
 server.listen(8000)
 ```
 
+### Metadata
+
+The `metadata` option in `Client#connect` is used to send arbitrary handshake data immediately after establishing a connection. When a new connection is opened, the remote client can access this data on the `metadata` property of the connection object without having to subscribe to the remote client's messages. This data is sent over the secure RTCDataChannel, making it a good candidate for sensitive data like passwords.
+
+In the below example, a server can handle authentication before subscribing to the client's messages:
+
+```js
+// client.js
+
+const connection = await udp.connect({
+  metadata: {
+    credentials: {
+      username: "foo",
+      password: "bar",
+    },
+  },
+})
+```
+
+```js
+// server.js
+
+udp.connections.subscribe(connection => {
+  let user 
+
+  try {
+    user = await fakeAuth.login(connection.metadata.credentials)
+  } catch (err) {
+    // Authentication failed, close connection immediately.
+    connection.send(fakeProtocol.loginFailure())
+    connection.close()
+    return
+  }
+  // The user authenticated successfully.
+  connection.send(fakeProtocol.loginSuccess(user))
+  connection.messages.subscribe(...)
+})
+```
+
 ### P2P
+
+Of course this library also supports peer-to-peer communication. The below example demonstrates two clients connected to eachother in the same browser tab. The example could be easily adapted to two machines, but the users' identities would have to be exchanged at the application level since web-udp doesn't doesn't provide rooms or peer brokering out of the box.
 
 ```html
 <!-- index.html -->
@@ -97,7 +141,7 @@ async function main() {
   const connection = await right.connect(route)
 
   left.connections.subscribe(
-    ({ messages }) => messages.subscribe(console.log)
+    connection => connection.messages.subscribe(console.log)
   )
 
   connection.send("HELLO")

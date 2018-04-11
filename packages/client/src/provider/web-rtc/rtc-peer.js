@@ -10,7 +10,12 @@ import type {
 
 import type { Connection } from ".."
 
-import { Signal } from "@web-udp/protocol"
+import {
+  Signal,
+  CHANNEL_MESSAGE_TYPE_KEY,
+  CHANNEL_MESSAGE_TYPE_HANDSHAKE,
+  CHANNEL_MESSAGE_PAYLOAD_KEY,
+} from "@web-udp/protocol"
 import RTCChannel from "./rtc-channel"
 
 // Enforce UDP-like SCTP messaging.
@@ -22,7 +27,7 @@ const DATA_CHANNEL_OPTIONS = {
 export interface Peer {
   channel(
     string,
-    options?: { binaryType?: "arraybuffer" | "blob" },
+    options?: { binaryType?: "arraybuffer" | "blob", metadata?: any },
   ): Promise<Connection>;
   offer(): Promise<RTCSessionDescription>;
   answer(RTCSessionDescription): Promise<RTCSessionDescription>;
@@ -35,6 +40,21 @@ export type PeerOptions = {
   onClose: (...mixed[]) => mixed,
   onICE: RTCIceCandidate => mixed,
   peerConnection: RTCPeerConnection,
+}
+
+function handshake(metadata?: any) {
+  return {
+    [CHANNEL_MESSAGE_TYPE_KEY]: CHANNEL_MESSAGE_TYPE_HANDSHAKE,
+    [CHANNEL_MESSAGE_PAYLOAD_KEY]: metadata,
+  }
+}
+
+function getType(message: Object) {
+  return message[CHANNEL_MESSAGE_TYPE_KEY]
+}
+
+function getPayload(message: Object) {
+  return message[CHANNEL_MESSAGE_PAYLOAD_KEY]
 }
 
 export default class RTCPeer implements Peer {
@@ -68,10 +88,14 @@ export default class RTCPeer implements Peer {
     )
   }
 
-  channel(
+  channel = (
     cid: string,
-    options: { binaryType?: "arraybuffer" | "blob" } = {},
-  ): Promise<Connection> {
+    options: {
+      binaryType?: "arraybuffer" | "blob",
+      metadata?: any,
+    } = {},
+  ): Promise<Connection> => {
+    const metadata = options.metadata || {}
     // Create a RTCDataChannel with the id as the label.
     const dataChannel = this._peerConnection.createDataChannel(
       cid,
@@ -80,17 +104,22 @@ export default class RTCPeer implements Peer {
 
     dataChannel.binaryType = options.binaryType || "arraybuffer"
 
+    const handleOpen = done => {
+      const channel = new RTCChannel({ dataChannel })
+
+      channel.metadata = metadata
+
+      this._channels[dataChannel.label] = channel
+      this._onChannel(channel)
+
+      // Send local handshake
+      channel.send(JSON.stringify(handshake(metadata)))
+
+      done(channel)
+    }
+
     return new Promise(resolve => {
-      const handle = () => {
-        const channel = (this._channels[
-          dataChannel.label
-        ] = new RTCChannel({
-          dataChannel,
-        }))
-        resolve(channel)
-        this._onChannel(channel)
-      }
-      dataChannel.addEventListener("open", handle)
+      dataChannel.addEventListener("open", () => handleOpen(resolve))
     })
   }
 
@@ -141,7 +170,18 @@ export default class RTCPeer implements Peer {
       dataChannel,
     })
 
-    this._onChannel(channel)
+    const handleMessage = (data: any) => {
+      const message = JSON.parse(data)
+
+      if (getType(message) === CHANNEL_MESSAGE_TYPE_HANDSHAKE) {
+        channel.metadata = getPayload(message)
+        this._onChannel(channel)
+      }
+
+      channel.messages.unsubscribe(handleMessage)
+    }
+
+    channel.messages.subscribe(handleMessage)
   }
 
   _onSignalingStateChange = () => {

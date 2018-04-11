@@ -8,12 +8,13 @@ export interface Connection {
   closed: Signal<>;
   errors: Signal<{ error: string }>;
   messages: Signal<>;
+  metadata: any;
 }
 
 export interface ConnectionProvider {
   create(
     pid: string,
-    options?: { binaryType?: "arraybuffer" | "blob" },
+    options?: { binaryType?: "arraybuffer" | "blob", metadata?: any },
   ): Promise<Connection>;
   close(pid: string): void;
 }

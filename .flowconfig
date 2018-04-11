@@ -10,3 +10,4 @@
 [lints]
 
 [options]
+module.name_mapper='^@web-udp/\(.*\)$' -> '<PROJECT_ROOT>/packages/\1/src/index.js'

@@ -1,5 +1,3 @@
-// @flow
-
 import type { Connection } from "../../../packages/client/src/provider"
 
 import { Signal } from "../../../packages/protocol"
@@ -13,5 +11,6 @@ export default (): Connection => {
     closed: new Signal(),
     errors: new Signal(),
     messages: new Signal(),
+    metadata: null,
   }
 }

@@ -10,7 +10,10 @@ import {
 } from "@web-udp/protocol"
 import { RTCConnectionProvider } from "./provider/web-rtc"
 
-type ConnectOptions = { binaryType?: "arraybuffer" | "blob" }
+type ConnectOptions = {
+  binaryType?: "arraybuffer" | "blob",
+  metadata?: any,
+}
 
 type ClientOptions =
   | {| url?: string |}

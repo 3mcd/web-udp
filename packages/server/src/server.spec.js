@@ -22,6 +22,11 @@ describe("Server", () => {
           connection.send("PONG")
         }
       })
+      if (connection.metadata) {
+        connection.send(
+          `GOT_METADATA:${JSON.stringify(connection.metadata)}`,
+        )
+      }
     })
 
     server.listen(5001)
@@ -80,6 +85,30 @@ describe("Server", () => {
       })
 
       expect(res).toBe(true)
+
+      await browser.close()
+    })
+
+    it("clients can provide metadata with a connection request", async () => {
+      const { browser, page } = await init()
+      const res = await page.evaluate(() => {
+        const client = new Udp.Client({
+          url: "localhost:5001",
+        })
+
+        return new window.Promise((resolve, reject) => {
+          client.connect({ metadata: "FOO" }).then(master => {
+            master.messages.subscribe(data => {
+              const message = data.split(":")
+              if (message[0] === "GOT_METADATA") {
+                resolve(message[1])
+              }
+            })
+          })
+        })
+      })
+
+      expect(res).toBe('"FOO"')
 
       await browser.close()
     })

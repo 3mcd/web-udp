@@ -6,26 +6,37 @@ const udp = new Server({
   server,
 })
 
-udp.connections.subscribe(({ send, messages }) =>
-  messages.subscribe(message => {
+udp.connections.subscribe(connection => {
+  const { credentials } = connection.metadata
+
+  if (
+    credentials &&
+    (credentials.username !== "foo" || credentials.password !== "bar")
+  ) {
+    connection.send("AUTH_FAIL")
+    connection.close()
+    return
+  }
+
+  connection.messages.subscribe(message => {
     if (message === "PING") {
-      setTimeout(() => send("PONG"), 1000)
+      setTimeout(() => connection.send("PONG"), 1000)
     } else if (message === "PULL") {
-      setInterval(() => send("PUSH"), 1000)
+      setInterval(() => connection.send("PUSH"), 1000)
     }
-  }),
-)
+  })
+})
 
 const client = udp.client()
 
-client.connect().then(({ send, messages }) => {
-  messages.subscribe(message => {
+client.connect().then(connection => {
+  connection.messages.subscribe(message => {
     console.log(message)
     if (message === "PONG") {
-      send("PING")
+      connection.send("PING")
     }
   })
-  send("PING")
+  connection.send("PING")
 })
 
 server.listen(4000)

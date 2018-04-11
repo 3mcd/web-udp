@@ -1,3 +1,7 @@
 // @flow
 
 export const CLIENT_MASTER = "__MASTER__"
+
+export const CHANNEL_MESSAGE_TYPE_KEY = "__WEB_UDP_TYPE__"
+export const CHANNEL_MESSAGE_PAYLOAD_KEY = "__WEB_UDP_PAYLOAD__"
+export const CHANNEL_MESSAGE_TYPE_HANDSHAKE = "HANDSHAKE"
