@@ -1,8 +1,7 @@
 {
   "name": "@web-udp/protocol",
-  "version": "2.1.0",
-  "description":
-    "Protocol library used in establishing connections between @web-udp/client peers",
+  "version": "2.2.0",
+  "description": "Protocol library used in establishing connections between @web-udp/client peers",
   "main": "lib/index.js",
   "browser": "dist/index.js",
   "scripts": {
