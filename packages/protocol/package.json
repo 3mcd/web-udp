@@ -1,7 +1,8 @@
 {
   "name": "@web-udp/protocol",
   "version": "2.1.0",
-  "description": "Protocol library used in establishing connections between @web-udp/client peers",
+  "description":
+    "Protocol library used in establishing connections between @web-udp/client peers",
   "main": "lib/index.js",
   "browser": "dist/index.js",
   "scripts": {
@@ -11,7 +12,6 @@
   "author": "Eric McDaniel <eric.mcdaniel@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "shortid": "^2.2.8",
-    "wrtc": "^0.0.67"
+    "wrtc": "^0.1.6"
   }
 }

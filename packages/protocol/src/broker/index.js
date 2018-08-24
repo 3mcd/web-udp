@@ -1,13 +1,11 @@
 // @flow
 
-import shortid from "shortid"
-
 import type { Message, Transport } from ".."
 
 export default class Broker {
   _transports: { [route: string]: Transport } = {}
 
-  register(transport: Transport, route: string = shortid()) {
+  register(transport: Transport, route: string) {
     this._transports[route] = transport
 
     transport.subscribe((message: Message) => {

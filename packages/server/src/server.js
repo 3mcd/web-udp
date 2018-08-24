@@ -4,6 +4,7 @@ import type { Server as HTTPServer } from "http"
 import type { Connection } from "@web-udp/client"
 
 import WebSocket from "ws"
+import shortid from "shortid"
 import {
   Signal,
   Broker,
@@ -14,7 +15,7 @@ import {
 import { Client, RTCConnectionProvider } from "@web-udp/client"
 
 function createLocalClient(
-  id: string | typeof undefined,
+  id: string,
   broker: Broker,
   onConnection: Connection => mixed,
 ) {
@@ -67,7 +68,10 @@ export class Server {
 
     // Route signaling messages to/from clients.
     this._webSocketServer.on("connection", ws => {
-      const id = this._broker.register(new WebSocketTransport(ws))
+      const id = this._broker.register(
+        new WebSocketTransport(ws),
+        shortid(),
+      )
       // Manually close data channels on signaling disconnect.
       ws.on("close", () => this._master.close(id))
     })
@@ -76,7 +80,7 @@ export class Server {
   // Create a local client for use on the server.
   client() {
     const client = createLocalClient(
-      undefined,
+      shortid(),
       this._broker,
       connection => client.connections.dispatch(connection),
     )
