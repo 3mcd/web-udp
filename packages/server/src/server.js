@@ -72,6 +72,8 @@ export class Server {
         new WebSocketTransport(ws),
         shortid(),
       )
+      // Manually close data channels on signaling disconnect.
+      ws.on("close", () => this._master.close(id))
     })
   }
 
