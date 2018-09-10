@@ -2,8 +2,20 @@
 
 import type { Message, Transport } from ".."
 
+type Options = {
+  keepAlivePeriod: number,
+}
+
 export default class Broker {
   _transports: { [route: string]: Transport } = {}
+  _keepAlivePeriod: number
+  _keepAliveTimers: { [route: string]: number } = {}
+
+  constructor(options: Options) {
+    const { keepAlivePeriod } = options
+
+    this._keepAlivePeriod = keepAlivePeriod
+  }
 
   register(transport: Transport, route: string) {
     this._transports[route] = transport
@@ -21,7 +33,21 @@ export default class Broker {
       route,
     })
 
+    this._keepAlive(route)
+
     return route
+  }
+
+  _keepAlive(route: string) {
+    if (this._keepAliveTimers[route]) {
+      clearTimeout(this._keepAliveTimers[route])
+    }
+
+    this._keepAliveTimers[route] = setTimeout(() => {
+      this._transports[route].send({
+        type: "KEEP_ALIVE",
+      })
+    }, this._keepAlivePeriod)
   }
 
   _onMessage = (message: Message, src: string) => {
@@ -74,8 +100,14 @@ export default class Broker {
         })
         break
       }
+      case "KEEP_ALIVE_CLIENT": {
+        this._keepAlive(src)
+        break
+      }
       case "TRANSPORT_CLOSE": {
+        clearTimeout(this._keepAliveTimers[src])
         delete this._transports[src]
+        delete this._keepAliveTimers[src]
         break
       }
       default:

@@ -57,7 +57,8 @@
   "scripts": {
     "clean":
       "lerna exec -- rm -rf ./lib/* ./dist/* && lerna clean --yes",
-    "build": "npm run clean && lerna bootstrap && lerna run build",
+    "build":
+      "npm run clean && lerna bootstrap --hoist && lerna run build",
     "precommit": "lint-staged",
     "prepush": "npm test",
     "start": "node examples/server.js",

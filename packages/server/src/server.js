@@ -38,7 +38,10 @@ function createLocalClient(
 
 type ServerOptions = {
   server: HTTPServer,
+  keepAlivePeriod?: number,
 }
+
+const DEFAULT_KEEP_ALIVE_PERIOD = 30000
 
 // Server() sets up a signaling broker that can facilitate connections between
 // clients.
@@ -50,14 +53,17 @@ export class Server {
   connections: Signal<Connection> = new Signal()
 
   constructor(options: ServerOptions) {
-    const { server } = options
+    const {
+      server,
+      keepAlivePeriod = DEFAULT_KEEP_ALIVE_PERIOD,
+    } = options
 
     // Create the signaling server.
     this._webSocketServer = new WebSocket.Server({ server })
 
     // Create a connection broker used to send signaling messages between
     // clients.
-    this._broker = new Broker()
+    this._broker = new Broker({ keepAlivePeriod })
 
     // Create the master client.
     this._master = createLocalClient(
@@ -68,10 +74,8 @@ export class Server {
 
     // Route signaling messages to/from clients.
     this._webSocketServer.on("connection", ws => {
-      const id = this._broker.register(
-        new WebSocketTransport(ws),
-        shortid(),
-      )
+      const transport = new WebSocketTransport(ws)
+      const id = this._broker.register(transport, shortid())
       // Manually close data channels on signaling disconnect.
       ws.on("close", () => this._master.close(id))
     })

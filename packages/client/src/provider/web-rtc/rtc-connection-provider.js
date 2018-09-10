@@ -109,6 +109,12 @@ export default class RTCConnectionProvider
 
         break
       }
+      case "KEEP_ALIVE": {
+        this._transport.send({
+          type: "KEEP_ALIVE_CLIENT",
+        })
+        break
+      }
       default:
         break
     }

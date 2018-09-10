@@ -59,6 +59,14 @@ type TransportClose = {
   type: "TRANSPORT_CLOSE",
 }
 
+type KeepAlive = {
+  type: "KEEP_ALIVE",
+}
+
+type KeepAliveClient = {
+  type: "KEEP_ALIVE_CLIENT",
+}
+
 export type Message =
   | Route
   | OfferClient
@@ -68,3 +76,5 @@ export type Message =
   | IceClient
   | Ice
   | TransportClose
+  | KeepAlive
+  | KeepAliveClient
