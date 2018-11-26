@@ -5,5 +5,4 @@ build/
 coverage/
 examples/
 flow-typed/
-src/
 test/
