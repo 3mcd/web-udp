@@ -59,20 +59,83 @@ export default class RTCPeer implements Peer {
     this.peerConnection = peerConnection
 
     this.peerConnection.addEventListener("close", () => this.close())
-    this.peerConnection.addEventListener("datachannel", this._onDataChannel)
-    this.peerConnection.addEventListener("icecandidate", this._onIceCandidate)
+    this.peerConnection.addEventListener(
+      "datachannel",
+      this.onDataChannel,
+    )
+    this.peerConnection.addEventListener(
+      "icecandidate",
+      this.onIceCandidate,
+    )
     this.peerConnection.addEventListener(
       "signalingstatechange",
-      this._onSignalingStateChange,
+      this.onSignalingStateChange,
     )
+  }
+
+  private setLocalDescription = (sdp: RTCSessionDescriptionInit) => {
+    this.peerConnection.setLocalDescription(sdp)
+  }
+
+  private onIceCandidate = (e: RTCPeerConnectionIceEvent) => {
+    this.onIce(e.candidate)
+  }
+
+  private onDataChannel = (e: RTCDataChannelEvent) => {
+    const { channel: dataChannel } = e
+
+    let channel = this.channels[dataChannel.label]
+
+    if (channel) {
+      return
+    }
+
+    channel = this.channels[dataChannel.label] = new RTCChannel({
+      dataChannel,
+    })
+
+    const handleMessage = (data: any) => {
+      const message = JSON.parse(data)
+
+      if (getType(message) === CHANNEL_MESSAGE_TYPE_HANDSHAKE) {
+        channel.metadata = getPayload(message)
+        this.onChannel(channel)
+      }
+
+      channel.messages.unsubscribe(handleMessage)
+    }
+
+    channel.messages.subscribe(handleMessage)
+  }
+
+  private onSignalingStateChange = () => {
+    const { connectionState } = this.peerConnection
+
+    switch (connectionState) {
+      case "disconnected":
+      case "failed":
+      case "closed":
+        this.onClose()
+        break
+      default:
+        break
+    }
   }
 
   channel = (
     cid: string,
     options: ConnectionOptions = {},
   ): Promise<Connection> => {
-    const { maxPacketLifeTime, maxRetransmits, metadata = {} } = options
-    const dataChannelOptions = {
+    const {
+      maxPacketLifeTime,
+      maxRetransmits,
+      metadata = {},
+    } = options
+    const dataChannelOptions: {
+      ordered: boolean
+      maxPacketLifeTime?: number
+      maxRetransmits?: number
+    } = {
       ...DATA_CHANNEL_OPTIONS,
     }
 
@@ -121,7 +184,7 @@ export default class RTCPeer implements Peer {
       console.error(e)
     }
 
-    this._setLocalDescription(sdp)
+    this.setLocalDescription(sdp)
 
     return sdp
   }
@@ -138,58 +201,9 @@ export default class RTCPeer implements Peer {
       console.error(e)
     }
 
-    this._setLocalDescription(sdp)
+    this.setLocalDescription(sdp)
 
     return sdp
-  }
-
-  _setLocalDescription = (sdp: RTCSessionDescriptionInit) => {
-    this.peerConnection.setLocalDescription(sdp)
-  }
-
-  _onIceCandidate = (e: RTCPeerConnectionIceEvent) => {
-    this.onIce(e.candidate)
-  }
-
-  _onDataChannel = (e: RTCDataChannelEvent) => {
-    const { channel: dataChannel } = e
-
-    let channel = this.channels[dataChannel.label]
-
-    if (channel) {
-      return
-    }
-
-    channel = this.channels[dataChannel.label] = new RTCChannel({
-      dataChannel,
-    })
-
-    const handleMessage = (data: any) => {
-      const message = JSON.parse(data)
-
-      if (getType(message) === CHANNEL_MESSAGE_TYPE_HANDSHAKE) {
-        channel.metadata = getPayload(message)
-        this.onChannel(channel)
-      }
-
-      channel.messages.unsubscribe(handleMessage)
-    }
-
-    channel.messages.subscribe(handleMessage)
-  }
-
-  _onSignalingStateChange = () => {
-    const { connectionState } = this.peerConnection
-
-    switch (connectionState) {
-      case "disconnected":
-      case "failed":
-      case "closed":
-        this.onClose()
-        break
-      default:
-        break
-    }
   }
 
   /**
@@ -199,7 +213,7 @@ export default class RTCPeer implements Peer {
     this.peerConnection.setRemoteDescription(sdp)
   }
 
-  addIceCandidate(ice: RTCIceCandidate) {
+  addIceCandidate(ice: RTCIceCandidateInit) {
     if (ice === null) {
       return
     }

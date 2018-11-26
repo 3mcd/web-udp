@@ -1,4 +1,8 @@
-import { ConnectionProvider, Connection, ConnectionOptions } from "../types"
+import {
+  ConnectionProvider,
+  Connection,
+  ConnectionOptions,
+} from "../types"
 import { Message, Transport } from "@web-udp/protocol"
 
 import shortid from "shortid"
@@ -25,7 +29,8 @@ export type RTCConnectionProviderOptions = {
   onConnection?: (Connection) => any
 }
 
-export default class RTCConnectionProvider implements ConnectionProvider {
+export default class RTCConnectionProvider
+  implements ConnectionProvider {
   private onPeerChannel: (Connection) => any
   private peers: { [peerId: string]: RTCPeer } = {}
   private transport: Transport
@@ -36,19 +41,22 @@ export default class RTCConnectionProvider implements ConnectionProvider {
     this.transport = transport
     this.onPeerChannel = onConnection
 
-    this.transport.subscribe(this._onMessage)
+    this.transport.subscribe(this.onMessage)
   }
 
   /**
    * Establish a UDP connection with a remote peer.
    */
-  async create(pid: string, options?: ConnectionOptions): Promise<Connection> {
+  async create(
+    pid: string,
+    options?: ConnectionOptions,
+  ): Promise<Connection> {
     const cid = shortid()
-    const peer = this.peers[pid] || this._addPeer(pid)
+    const peer = this.peers[pid] || this.addPeer(pid)
     const channel = peer.channel(cid, options)
     const sdp = await peer.offer()
 
-    this._onPeerSDP(sdp, pid)
+    this.onPeerSDP(sdp, pid)
 
     return await channel
   }
@@ -56,7 +64,7 @@ export default class RTCConnectionProvider implements ConnectionProvider {
   /**
    * Handle a signaling message.
    */
-  _onMessage = async (message: Message) => {
+  private onMessage = async (message: Message) => {
     switch (message.type) {
       // Route ICE candidates to peers.
       case "ICE": {
@@ -72,7 +80,9 @@ export default class RTCConnectionProvider implements ConnectionProvider {
         const peer = this.peers[src]
 
         if (!peer) {
-          throw new Error("Received ICE candidate for unestablished peer")
+          throw new Error(
+            "Received ICE candidate for unestablished peer",
+          )
         }
 
         peer.addIceCandidate(ice)
@@ -86,7 +96,7 @@ export default class RTCConnectionProvider implements ConnectionProvider {
           src,
           payload: { sdp },
         } = message
-        const peer = this.peers[src] || this._addPeer(src)
+        const peer = this.peers[src] || this.addPeer(src)
 
         let description: RTCSessionDescription
 
@@ -101,7 +111,7 @@ export default class RTCConnectionProvider implements ConnectionProvider {
         if (message.type === "OFFER") {
           const sdp = await peer.answer()
 
-          this._onPeerSDP(sdp, src)
+          this.onPeerSDP(sdp, src)
         }
 
         break
@@ -117,16 +127,18 @@ export default class RTCConnectionProvider implements ConnectionProvider {
     }
   }
 
-  _addPeer(pid: string) {
+  private addPeer(pid: string) {
     if (this.peers[pid]) {
       throw new Error(`RTCPeer with id ${pid} already exists.`)
     }
 
     const peerOptions = {
       onChannel: this.onPeerChannel,
-      onClose: () => this._onPeerClose(pid),
-      onICE: ice => this._onPeerICE(ice, pid),
-      peerConnection: new RTCPeerConnection(RTC_PEER_CONNECTION_OPTIONS),
+      onClose: () => this.onPeerClose(pid),
+      onICE: ice => this.onPeerICE(ice, pid),
+      peerConnection: new RTCPeerConnection(
+        RTC_PEER_CONNECTION_OPTIONS,
+      ),
     }
     const peer = new RTCPeer(peerOptions)
 
@@ -135,7 +147,10 @@ export default class RTCConnectionProvider implements ConnectionProvider {
     return peer
   }
 
-  _onPeerSDP = (sdp: RTCSessionDescriptionInit, pid: string) => {
+  private onPeerSDP = (
+    sdp: RTCSessionDescriptionInit,
+    pid: string,
+  ) => {
     const payload = { sdp }
 
     let message
@@ -157,7 +172,7 @@ export default class RTCConnectionProvider implements ConnectionProvider {
     this.transport.send(message)
   }
 
-  _onPeerICE = (ice: RTCIceCandidate, pid: string) => {
+  private onPeerICE = (ice: RTCIceCandidate, pid: string) => {
     this.transport.send({
       type: "ICE_CLIENT",
       pid,
@@ -167,7 +182,7 @@ export default class RTCConnectionProvider implements ConnectionProvider {
     })
   }
 
-  _onPeerClose = (pid: string) => {
+  private onPeerClose = (pid: string) => {
     delete this.peers[pid]
   }
 

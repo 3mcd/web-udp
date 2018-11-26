@@ -1,8 +1,7 @@
 {
   "name": "@web-udp/server",
   "version": "2.3.0",
-  "description":
-    "Node signaling server for the @web-udp/client package",
+  "description": "Node signaling server for the @web-udp/client package",
   "main": "lib/index.js",
   "types": "src/index.ts",
   "scripts": {
