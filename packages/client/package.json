@@ -4,6 +4,7 @@
   "description": "Establish UDP connections in the browser",
   "main": "lib/index.js",
   "browser": "dist/index.js",
+  "types": "src/index.ts",
   "scripts": {
     "build": "webpack --mode production && babel ./src --root-mode upward --out-dir lib --extensions .ts",
     "prepare": "npm run build"

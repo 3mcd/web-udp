@@ -4,6 +4,7 @@
   "description":
     "Protocol library used in establishing connections between @web-udp/client peers",
   "main": "lib/index.js",
+  "types": "src/index.ts",
   "scripts": {
     "build": "webpack --mode production",
     "prepare": "npm run build"

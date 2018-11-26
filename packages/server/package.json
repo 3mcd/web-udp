@@ -4,6 +4,7 @@
   "description":
     "Node signaling server for the @web-udp/client package",
   "main": "lib/index.js",
+  "types": "src/index.ts",
   "scripts": {
     "build": "webpack --mode production",
     "prepare": "npm run build"
