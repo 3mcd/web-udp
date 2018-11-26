@@ -4,14 +4,16 @@
   "description":
     "Protocol library used in establishing connections between @web-udp/client peers",
   "main": "lib/index.js",
-  "browser": "dist/index.js",
   "scripts": {
-    "build": "node ../../tools/build",
+    "build": "webpack --mode production",
     "prepare": "npm run build"
   },
   "author": "Eric McDaniel <eric.mcdaniel@gmail.com>",
   "license": "ISC",
-  "dependencies": {
-    "wrtc": "^0.1.6"
+  "devDependencies": {
+    "wrtc": "0.3.2"
+  },
+  "peerDependencies": {
+    "wrtc": ">=0.3.2"
   }
 }
