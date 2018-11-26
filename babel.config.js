@@ -1,6 +1,6 @@
 module.exports = api => {
   if (api) {
-    api.cache(true);
+    api.cache(true)
   }
 
   return {
@@ -10,17 +10,17 @@ module.exports = api => {
         "@babel/preset-env",
         {
           targets: {
-            browsers: ["last 2 versions"]
+            browsers: ["last 2 versions"],
           },
-          modules: false
-        }
-      ]
+          modules: false,
+        },
+      ],
     ],
     plugins: [
       "@babel/plugin-transform-modules-commonjs",
       "@babel/plugin-proposal-class-properties",
       "@babel/plugin-proposal-object-rest-spread",
-      ["@babel/plugin-transform-runtime", { helpers: false }]
-    ]
-  };
-};
+      ["@babel/plugin-transform-runtime", { regenerator: true, helpers: true }],
+    ],
+  }
+}
