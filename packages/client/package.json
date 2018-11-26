@@ -12,6 +12,7 @@
   "author": "Eric McDaniel <eric.g.mcdaniel@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "@babel/runtime": "7.1.5",
     "@web-udp/protocol": "^3.0.1",
     "shortid": "2.2.13",
     "wrtc": "0.3.2",
