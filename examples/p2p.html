@@ -1,41 +1,42 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>web-udp p2p example</title>
-</head>
-<body>
-  <a id="connect" href="">Connect</a>
-  <script type="text/javascript" src="../packages/client/dist/index.browser.js"></script>
-  <script type="text/javascript">
-    const client = new Udp.Client({ url: "localhost:4000" })
+  <head>
+    <title>web-udp p2p example</title>
+  </head>
+  <body>
+    <a id="connect" href="">Connect</a>
+    <script
+      type="text/javascript"
+      src="../packages/client/dist/index.js"
+    ></script>
+    <script type="text/javascript">
+      const client = new Udp.Client({ url: "localhost:4000" })
 
-    client.connections.subscribe(
-      ({ messages }) => {
-        messages.subscribe(message => {
+      client.connections.subscribe(connection => {
+        connection.messages.subscribe(message => {
           const el = document.createElement("div")
           el.textContent = message
           document.body.appendChild(el)
         })
-      }
-    )
+      })
 
-    client.route().then(route =>
-      document.getElementById("connect").href =
-        `${location.href.split("?")[0]}?route=${route}`
-    )
-
-    const match = location.search.match(/route=(.*)/)
-
-    if (match) {
       client
-        .connect(match[1])
+        .route()
         .then(
-          ({ send, messages, closed }) => {
-            send("HELLO")
-            closed.subscribe(() => console.log("CLOSE"))
-          }
+          route =>
+            (document.getElementById("connect").href = `${
+              location.href.split("?")[0]
+            }?route=${route}`),
         )
-    }
-  </script>
-</body>
+
+      const match = location.search.match(/route=(.*)/)
+
+      if (match) {
+        client.connect(match[1]).then(connection => {
+          connection.send("HELLO")
+          connection.closed.subscribe(() => console.log("CLOSE"))
+        })
+      }
+    </script>
+  </body>
 </html>
