@@ -1,9 +1,9 @@
 {
   "name": "@web-udp/server",
-  "version": "2.3.0",
-  "description":
-    "Node signaling server for the @web-udp/client package",
+  "version": "3.0.0",
+  "description": "Node signaling server for the @web-udp/client package",
   "main": "lib/index.js",
+  "types": "src/index.ts",
   "scripts": {
     "build": "webpack --mode production",
     "prepare": "npm run build"
@@ -11,8 +11,8 @@
   "author": "Eric.McDaniel <eric.g.mcdaniel@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "@web-udp/client": "^2.3.0",
-    "@web-udp/protocol": "^2.3.0",
+    "@web-udp/client": "^3.0.0",
+    "@web-udp/protocol": "^3.0.0",
     "shortid": "2.2.13",
     "ws": "5.2.2"
   }

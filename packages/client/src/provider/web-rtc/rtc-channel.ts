@@ -39,10 +39,11 @@ export default class RTCChannel implements Connection {
     this.flush()
   }
 
-  private onMessage = (e: MessageEvent) => this.messages.dispatch(e.data)
+  private onMessage = (e: MessageEvent) =>
+    this.messages.dispatch(e.data)
 
   private onError = (e: RTCErrorEvent) =>
-    this.errors.dispatch({ error: e.error })
+    this.errors.dispatch({ error: e.error.toString() })
 
   private flush() {
     for (let i = 0; i < this.buffer.length; i++) {
@@ -53,7 +54,9 @@ export default class RTCChannel implements Connection {
         this.buffer.splice(i, 1)
       } catch (err) {
         this.errors.dispatch({
-          error: `Failed to send ${JSON.stringify(message)} to ${this.id}.`,
+          error: `Failed to send ${JSON.stringify(message)} to ${
+            this.id
+          }.`,
         })
       }
     }
@@ -85,6 +88,6 @@ export default class RTCChannel implements Connection {
       this.dataChannel.close()
     }
 
-    this.closed.dispatch()
+    this.closed.dispatch(undefined)
   }
 }

@@ -1,31 +1,36 @@
 # web-udp
 
-web-udp is a library used to establish UDP-like connections in Node/browser environments. The key goal of this project to provide a small, stable API that anyone can use to work with real-time data on the Web.
+web-udp is a library used to establish UDP-like connections in Node/browser environments. The key goal of this project to provide a small, stable API that anyone can use to work with real-time data on the web.
 
-The library is currently implemented as an abstraction on top of unreliable RTCDataChannels. Since WebRTC is a dependency, a signaling server is included with the package to facilitate connections between clients. Client/server connections are available with the help of the [wrtc](https://www.npmjs.com/package/wrtc) package.
+The library is currently implemented as an abstraction on top of unordered and unreliable RTCDataChannels. Since WebRTC is a dependency, a WebSocket based signaling server is included with the package to facilitate connections between clients. Client/server connections are available with the help of the [wrtc](https://www.npmjs.com/package/wrtc) package.
 
 ## API
 
 ```js
-Signal<T>#subscribe(subscriber: T => *)
-Signal<T>#unsubscribe(subscriber: T => *)
+Signal<T>.subscribe(subscriber: T => any)
+Signal<T>.unsubscribe(subscriber: T => any)
 
 Client(options?: { url?: string })
-Client#connect(to?: string = "__MASTER__", options?: { binaryType?: "arraybuffer" | "blob", metadata?: * }): Promise<Connection>
-Client#route(): Promise<string>
-Client#connections: Signal<Connection>
+Client.connect(to?: string = "__MASTER__", options?: {
+  binaryType?: "arraybuffer" | "blob",
+  maxRetransmits?: number,
+  maxPacketLifeTime?: number,
+  metadata?: any
+}): Promise<Connection>
+Client.route(): Promise<string>
+Client.connections: Signal<Connection>
 
-Connection#send(message: *): void
-Connection#close(): void
-Connection#closed: Signal<>
-Connection#errors: Signal<{ err: string }>
-Connection#messages: Signal<*>
-Connection#metadata: any
+Connection.send(message: any): void
+Connection.close(): void
+Connection.closed: Signal
+Connection.errors: Signal<{ err: string }>
+Connection.messages: Signal<any>
+Connection.metadata: any
 
 // Node
 Server({ server: http.Server, keepAlivePeriod?: number = 30000 })
-Server#client(): Client
-Server#connections: Signal<Connection>
+Server.client(): Client
+Server.connections: Signal<Connection>
 ```
 
 ## Installation
@@ -48,10 +53,10 @@ import { Client } from "@web-udp/client"
 
 async function main() {
   const udp = new Client()
-  const { send, messages } = await udp.connect()
+  const connection = await udp.connect()
 
-  send("ping")
-  messages.subscribe(console.log)
+  connection.send("ping")
+  connection.messages.subscribe(console.log)
 }
 ```
 
@@ -65,21 +70,19 @@ const udp = new Server({ server })
 
 udp.connections.subscribe(
   connection => {
-    const { send, messages, errors, closed } = connection
-
-    messages.subscribe(
+    connection.messages.subscribe(
       message => {
         if (message === "ping") {
-          send("pong")
+          connection.send("pong")
         }
       }
     )
 
-    closed.subscribe(
+    connection.closed.subscribe(
       () => console.log("A connection closed.")
     )
 
-    errors.subscribe(
+    connection.errors.subscribe(
       err => console.log(err)
     )
   }
@@ -90,7 +93,7 @@ server.listen(8000)
 
 ### Metadata
 
-The `metadata` option in `Client#connect` is used to send arbitrary handshake data immediately after establishing a connection. When a new connection is opened, the remote client can access this data on the `metadata` property of the connection object without having to subscribe to the remote client's messages. This data is sent over the secure RTCDataChannel, making it a good candidate for sensitive data like passwords.
+The `metadata` option in `Client.connect` is used to send arbitrary handshake data immediately after establishing a connection. When a new connection is opened, the remote client can access this data on the `metadata` property of the connection object without having to subscribe to the remote client's messages. This data is sent over a secure `RTCDataChannel`, making it a good candidate for sensitive data like passwords.
 
 In the below example, a server can handle authentication before subscribing to the client's messages:
 
@@ -130,6 +133,10 @@ udp.connections.subscribe(connection => {
 ### P2P
 
 Of course this library also supports peer-to-peer communication. The below example demonstrates two clients connected to eachother in the same browser tab. The example could be easily adapted to two machines, but the users' identities would have to be exchanged at the application level since web-udp doesn't doesn't provide rooms or peer brokering out of the box.
+
+### Reliability
+
+`Client.connect` optionally takes the RTCDataChannel [`maxPacketLifeTime`](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/maxPacketLifeTime) and [`maxRetransmits`](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/maxRetransmits) options. These options can be used to enable an unordered and reliable data channel. There is currently no way to configure an ordered and unreliable stream.
 
 ```html
 <!-- index.html -->
