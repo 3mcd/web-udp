@@ -1,6 +1,6 @@
 {
   "name": "@web-udp/client",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "Establish UDP connections in the browser",
   "main": "lib/index.js",
   "browser": "dist/index.js",
@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "7.1.5",
-    "@web-udp/protocol": "^3.0.1",
+    "@web-udp/protocol": "^3.0.2",
     "shortid": "2.2.13",
     "wrtc": "0.3.2",
     "ws": "5.2.2"
