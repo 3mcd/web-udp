@@ -68,25 +68,17 @@ const { Server } = require("@web-udp/server")
 
 const udp = new Server({ server })
 
-udp.connections.subscribe(
-  connection => {
-    connection.messages.subscribe(
-      message => {
-        if (message === "ping") {
-          connection.send("pong")
-        }
-      }
-    )
+udp.connections.subscribe(connection => {
+  connection.messages.subscribe(message => {
+    if (message === "ping") {
+      connection.send("pong")
+    }
+  })
 
-    connection.closed.subscribe(
-      () => console.log("A connection closed.")
-    )
+  connection.closed.subscribe(() => console.log("A connection closed."))
 
-    connection.errors.subscribe(
-      err => console.log(err)
-    )
-  }
-)
+  connection.errors.subscribe(err => console.log(err))
+})
 
 server.listen(8000)
 ```
@@ -114,7 +106,7 @@ const connection = await udp.connect({
 // server.js
 
 udp.connections.subscribe(connection => {
-  let user 
+  let user
 
   try {
     user = await fakeAuth.login(connection.metadata.credentials)
@@ -134,10 +126,6 @@ udp.connections.subscribe(connection => {
 
 Of course this library also supports peer-to-peer communication. The below example demonstrates two clients connected to eachother in the same browser tab. The example could be easily adapted to two machines, but the users' identities would have to be exchanged at the application level since web-udp doesn't doesn't provide rooms or peer brokering out of the box.
 
-### Reliability
-
-`Client.connect` optionally takes the RTCDataChannel [`maxPacketLifeTime`](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/maxPacketLifeTime) and [`maxRetransmits`](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/maxRetransmits) options. These options can be used to enable an unordered and reliable data channel. There is currently no way to configure an ordered and unreliable stream.
-
 ```html
 <!-- index.html -->
 
@@ -154,8 +142,8 @@ async function main() {
   const route = await left.route()
   const connection = await right.connect(route)
 
-  left.connections.subscribe(
-    connection => connection.messages.subscribe(console.log)
+  left.connections.subscribe(connection =>
+    connection.messages.subscribe(console.log),
   )
 
   connection.send("HELLO")
@@ -172,6 +160,10 @@ Server({ server })
 
 server.listen(8000)
 ```
+
+## Reliability
+
+`Client.connect` optionally takes the RTCDataChannel [`maxPacketLifeTime`](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/maxPacketLifeTime) and [`maxRetransmits`](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/maxRetransmits) options. These options can be used to enable an unordered and reliable data channel. There is currently no way to configure an ordered and unreliable stream.
 
 ## Known Issues
 
