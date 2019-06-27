@@ -6,7 +6,7 @@
   "browser": "dist/index.js",
   "types": "src/index.ts",
   "scripts": {
-    "build": "webpack --mode production && babel ./src --root-mode upward --out-dir lib --extensions .ts",
+    "build": "../../node_modules/.bin/webpack --mode production && ../../node_modules/.bin/babel ./src --root-mode upward --out-dir lib --extensions .ts",
     "prepare": "npm run build"
   },
   "author": "Eric McDaniel <eric.g.mcdaniel@gmail.com>",

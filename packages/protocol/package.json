@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "types": "src/index.ts",
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "../../node_modules/.bin/webpack --mode production",
     "prepare": "npm run build"
   },
   "author": "Eric McDaniel <eric.mcdaniel@gmail.com>",
