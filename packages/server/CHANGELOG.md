@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/osofour/web-udp/compare/@web-udp/server@3.1.1...@web-udp/server@3.2.0) (2019-08-12)
+
+
+### Features
+
+* add port range option ([a9cb607](https://github.com/osofour/web-udp/commit/a9cb607))
+
+
+
+
+
 ## [3.1.1](https://github.com/osofour/web-udp/compare/@web-udp/server@3.1.0...@web-udp/server@3.1.1) (2019-06-27)
 
 **Note:** Version bump only for package @web-udp/server
