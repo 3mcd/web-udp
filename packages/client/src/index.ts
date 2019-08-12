@@ -1,4 +1,4 @@
-export { Connection } from "./provider"
+export { Connection, PortRange } from "./provider"
 export { Client } from "./client"
 export {
   default as RTCConnectionProvider,

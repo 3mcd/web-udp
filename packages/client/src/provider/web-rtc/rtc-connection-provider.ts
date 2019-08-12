@@ -2,6 +2,7 @@ import {
   ConnectionProvider,
   Connection,
   ConnectionOptions,
+  PortRange,
 } from "../types"
 import { Message, Transport } from "@web-udp/protocol"
 
@@ -27,19 +28,26 @@ const RTC_PEER_CONNECTION_OPTIONS = {
 export type RTCConnectionProviderOptions = {
   transport: Transport
   onConnection?: (Connection) => any
+  portRange?: PortRange
 }
 
 export default class RTCConnectionProvider
   implements ConnectionProvider {
   private onPeerChannel: (Connection) => any
+  private portRange: PortRange
   private peers: { [peerId: string]: RTCPeer } = {}
   private transport: Transport
 
   constructor(options: RTCConnectionProviderOptions) {
-    const { transport, onConnection = () => {} } = options
+    const {
+      transport,
+      onConnection = () => {},
+      portRange = { min: 0, max: 65535 },
+    } = options
 
     this.transport = transport
     this.onPeerChannel = onConnection
+    this.portRange = portRange
 
     this.transport.subscribe(this.onMessage)
   }
@@ -136,9 +144,10 @@ export default class RTCConnectionProvider
       onChannel: this.onPeerChannel,
       onClose: () => this.onPeerClose(pid),
       onICE: ice => this.onPeerICE(ice, pid),
-      peerConnection: new RTCPeerConnection(
-        RTC_PEER_CONNECTION_OPTIONS,
-      ),
+      peerConnection: new RTCPeerConnection({
+        ...RTC_PEER_CONNECTION_OPTIONS,
+        portRange: this.portRange,
+      }),
     }
     const peer = new RTCPeer(peerOptions)
 

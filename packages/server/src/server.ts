@@ -12,12 +12,17 @@ import {
   LocalTransport,
   WebSocketTransport,
 } from "@web-udp/protocol"
-import { Client, RTCConnectionProvider } from "@web-udp/client"
+import {
+  Client,
+  RTCConnectionProvider,
+  PortRange,
+} from "@web-udp/client"
 
 function createLocalClient(
   id: string,
   broker: Broker,
   onConnection: (Connection) => any,
+  portRange?: PortRange,
 ) {
   // Simulate an end-to-end connection for local clients.
   const { left, right } = LocalTransport.create()
@@ -26,6 +31,7 @@ function createLocalClient(
   const provider = new RTCConnectionProvider({
     onConnection,
     transport: right,
+    portRange,
   })
   // Route messages to/from client.
   broker.register(left, id)
@@ -39,6 +45,7 @@ function createLocalClient(
 type ServerOptions = {
   server: HTTPServer
   keepAlivePeriod?: number
+  portRange?: PortRange
 }
 
 const DEFAULT_KEEP_ALIVE_PERIOD = 30000
@@ -53,7 +60,11 @@ export class Server {
   connections: Signal<Connection> = new Signal()
 
   constructor(options: ServerOptions) {
-    const { server, keepAlivePeriod = DEFAULT_KEEP_ALIVE_PERIOD } = options
+    const {
+      server,
+      keepAlivePeriod = DEFAULT_KEEP_ALIVE_PERIOD,
+      portRange,
+    } = options
 
     // Create the signaling server.
     this.webSocketServer = new WS.Server({ server })
@@ -63,13 +74,18 @@ export class Server {
     this.broker = new Broker({ keepAlivePeriod })
 
     // Create the master client.
-    this.master = createLocalClient(CLIENT_MASTER, this.broker, connection =>
-      this.connections.dispatch(connection),
+    this.master = createLocalClient(
+      CLIENT_MASTER,
+      this.broker,
+      connection => this.connections.dispatch(connection),
+      portRange,
     )
 
     // Route signaling messages to/from clients.
     this.webSocketServer.on("connection", ws => {
-      const transport = new WebSocketTransport(ws)
+      const transport = new WebSocketTransport(
+        (ws as any) as WebSocket,
+      )
       const id = this.broker.register(transport, shortid())
       // Manually close data channels on signaling disconnect.
       ws.on("close", () => this.master.close(id))
@@ -78,8 +94,10 @@ export class Server {
 
   // Create a local client for use on the server.
   client() {
-    const client = createLocalClient(shortid(), this.broker, connection =>
-      client.connections.dispatch(connection),
+    const client = createLocalClient(
+      shortid(),
+      this.broker,
+      connection => client.connections.dispatch(connection),
     )
 
     return client

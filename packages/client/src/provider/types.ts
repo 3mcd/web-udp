@@ -16,7 +16,10 @@ export interface Connection {
 }
 
 export interface ConnectionProvider {
-  create(pid: string, options?: ConnectionOptions): Promise<Connection>
+  create(
+    pid: string,
+    options?: ConnectionOptions,
+  ): Promise<Connection>
   close(pid: string): void
 }
 
@@ -25,4 +28,9 @@ export interface ConnectionOptions {
   metadata?: any
   maxPacketLifeTime?: number
   maxRetransmits?: number
+}
+
+export type PortRange = {
+  min: number
+  max: number
 }
