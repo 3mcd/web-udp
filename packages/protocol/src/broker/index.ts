@@ -6,7 +6,7 @@ interface BrokerOptions {
 
 export default class Broker {
   private transports: { [route: string]: Transport } = {}
-  private keepAliveTimers: { [route: string]: Timeout } = {}
+  private keepAliveTimers: { [route: string]: NodeJS.Timeout } = {}
 
   readonly keepAlivePeriod: number
 
