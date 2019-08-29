@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.2](https://github.com/osofour/web-udp/compare/@web-udp/protocol@3.1.1...@web-udp/protocol@3.1.2) (2019-08-29)
+
+
+### Bug Fixes
+
+* number -> Timeout in broker ([de49156](https://github.com/osofour/web-udp/commit/de49156))
+
+
+
+
+
 ## [3.1.1](https://github.com/osofour/web-udp/compare/@web-udp/protocol@3.1.0...@web-udp/protocol@3.1.1) (2019-06-27)
 
 **Note:** Version bump only for package @web-udp/protocol
