@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.3](https://github.com/osofour/web-udp/compare/@web-udp/protocol@3.1.2...@web-udp/protocol@3.1.3) (2019-08-29)
+
+
+### Bug Fixes
+
+* use NodeJs timeout ([1a32277](https://github.com/osofour/web-udp/commit/1a32277))
+
+
+
+
+
 ## [3.1.2](https://github.com/osofour/web-udp/compare/@web-udp/protocol@3.1.1...@web-udp/protocol@3.1.2) (2019-08-29)
 
 
