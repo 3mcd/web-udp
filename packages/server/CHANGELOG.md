@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.3](https://github.com/osofour/web-udp/compare/@web-udp/server@3.2.2...@web-udp/server@3.2.3) (2019-10-04)
+
+**Note:** Version bump only for package @web-udp/server
+
+
+
+
+
 ## [3.2.2](https://github.com/osofour/web-udp/compare/@web-udp/server@3.2.1...@web-udp/server@3.2.2) (2019-08-29)
 
 **Note:** Version bump only for package @web-udp/server

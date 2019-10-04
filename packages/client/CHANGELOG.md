@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/osofour/web-udp/compare/@web-udp/client@3.2.2...@web-udp/client@3.3.0) (2019-10-04)
+
+
+### Features
+
+* add support for custom ice servers ([c29991e](https://github.com/osofour/web-udp/commit/c29991e))
+
+
+
+
+
 ## [3.2.2](https://github.com/osofour/web-udp/compare/@web-udp/client@3.2.1...@web-udp/client@3.2.2) (2019-08-29)
 
 **Note:** Version bump only for package @web-udp/client
