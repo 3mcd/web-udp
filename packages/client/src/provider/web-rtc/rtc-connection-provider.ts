@@ -21,14 +21,13 @@ const TURN = {
   credential: "homeo",
 }
 
-const RTC_PEER_CONNECTION_OPTIONS = {
-  iceServers: [STUN, TURN],
-}
+const DEFAULT_ICE_SERVERS: RTCIceServer[] = [STUN, TURN]
 
 export type RTCConnectionProviderOptions = {
   transport: Transport
   onConnection?: (Connection) => any
   portRange?: PortRange
+  iceServers?: RTCIceServer[]
 }
 
 export default class RTCConnectionProvider
@@ -37,17 +36,20 @@ export default class RTCConnectionProvider
   private portRange: PortRange
   private peers: { [peerId: string]: RTCPeer } = {}
   private transport: Transport
+  private iceServers: RTCIceServer[]
 
   constructor(options: RTCConnectionProviderOptions) {
     const {
       transport,
       onConnection = () => {},
       portRange = { min: 0, max: 65535 },
+      iceServers = DEFAULT_ICE_SERVERS,
     } = options
 
     this.transport = transport
     this.onPeerChannel = onConnection
     this.portRange = portRange
+    this.iceServers = iceServers
 
     this.transport.subscribe(this.onMessage)
   }
@@ -143,9 +145,9 @@ export default class RTCConnectionProvider
     const peerOptions = {
       onChannel: this.onPeerChannel,
       onClose: () => this.onPeerClose(pid),
-      onICE: ice => this.onPeerICE(ice, pid),
+      onICE: (ice: RTCIceCandidate) => this.onPeerICE(ice, pid),
       peerConnection: new RTCPeerConnection({
-        ...RTC_PEER_CONNECTION_OPTIONS,
+        iceServers: this.iceServers,
         portRange: this.portRange,
       }),
     }
@@ -162,7 +164,7 @@ export default class RTCConnectionProvider
   ) => {
     const payload = { sdp }
 
-    let message
+    let message: Message
 
     if (sdp.type === "offer") {
       message = {

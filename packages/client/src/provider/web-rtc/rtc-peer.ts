@@ -13,17 +13,22 @@ const DATA_CHANNEL_OPTIONS = {
 }
 
 export interface Peer {
-  channel(string, options?: ConnectionOptions): Promise<Connection>
+  channel(
+    id: string,
+    options?: ConnectionOptions,
+  ): Promise<Connection>
   offer(): Promise<RTCSessionDescriptionInit>
-  answer(RTCSessionDescription): Promise<RTCSessionDescriptionInit>
-  setRemoteDescription(RTCSessionDescription): void
-  addIceCandidate(RTCIceCandidate): void
+  answer(
+    sdp: RTCSessionDescription,
+  ): Promise<RTCSessionDescriptionInit>
+  setRemoteDescription(sdp: RTCSessionDescription): void
+  addIceCandidate(ice: RTCIceCandidate): void
 }
 
 export type PeerOptions = {
-  onChannel: (RTCChannel) => any
+  onChannel: (channel: RTCChannel) => any
   onClose: (...args: any[]) => any
-  onICE: (RTCIceCandidate) => any
+  onICE: (ice: RTCIceCandidate) => any
   peerConnection: RTCPeerConnection
 }
 
@@ -44,9 +49,9 @@ function getPayload(message: Object) {
 
 export default class RTCPeer implements Peer {
   private channels: { [channelId: string]: RTCChannel } = {}
-  private onChannel: (RTCChannel) => any
+  private onChannel: (channel: RTCChannel) => any
   private onClose: (...args: any[]) => any
-  private onIce: (RTCIceCandidate) => any
+  private onIce: (ice: RTCIceCandidate) => any
   private peerConnection: RTCPeerConnection
 
   constructor(options: PeerOptions) {
@@ -153,7 +158,7 @@ export default class RTCPeer implements Peer {
 
     dataChannel.binaryType = options.binaryType || "arraybuffer"
 
-    const handleOpen = done => {
+    const handleOpen = (done: (channel: RTCChannel) => any) => {
       const channel = new RTCChannel({ dataChannel })
 
       channel.metadata = metadata
