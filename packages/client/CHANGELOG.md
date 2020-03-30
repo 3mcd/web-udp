@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.4.0](https://github.com/osofour/web-udp/compare/@web-udp/client@3.3.0...@web-udp/client@3.4.0) (2020-03-30)
+
+
+### Features
+
+* add UNSAFE_ordered option ([4a18baa](https://github.com/osofour/web-udp/commit/4a18baa))
+
+
+
+
+
 # [3.3.0](https://github.com/osofour/web-udp/compare/@web-udp/client@3.2.2...@web-udp/client@3.3.0) (2019-10-04)
 
 
