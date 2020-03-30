@@ -45,7 +45,6 @@
     "bootstrap": "lerna bootstrap --hoist",
     "build": "lerna run build",
     "precommit": "lint-staged",
-    "prepush": "npm test",
     "start": "node examples/server.js",
     "test": "jest",
     "test-coverage": "jest --verbose --coverage"

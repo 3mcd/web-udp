@@ -135,6 +135,7 @@ export default class RTCPeer implements Peer {
       maxPacketLifeTime,
       maxRetransmits,
       metadata = {},
+      UNSAFE_ordered,
     } = options
     const dataChannelOptions: {
       ordered: boolean
@@ -142,6 +143,10 @@ export default class RTCPeer implements Peer {
       maxRetransmits?: number
     } = {
       ...DATA_CHANNEL_OPTIONS,
+    }
+
+    if (UNSAFE_ordered) {
+      dataChannelOptions.ordered = true
     }
 
     if (typeof maxPacketLifeTime === "number") {
