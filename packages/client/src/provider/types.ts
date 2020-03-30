@@ -26,6 +26,7 @@ export interface ConnectionProvider {
 export interface ConnectionOptions {
   binaryType?: "arraybuffer" | "blob"
   metadata?: any
+  UNSAFE_ordered?: boolean
   maxPacketLifeTime?: number
   maxRetransmits?: number
 }

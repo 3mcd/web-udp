@@ -15,7 +15,8 @@ Client.connect(to?: string = "__MASTER__", options?: {
   binaryType?: "arraybuffer" | "blob",
   maxRetransmits?: number,
   maxPacketLifeTime?: number,
-  metadata?: any
+  metadata?: any,
+  UNSAFE_ordered?: boolean
 }): Promise<Connection>
 Client.route(): Promise<string>
 Client.connections: Signal<Connection>
@@ -163,7 +164,7 @@ server.listen(8000)
 
 ## Reliability
 
-`Client.connect` optionally takes the RTCDataChannel [`maxPacketLifeTime`](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/maxPacketLifeTime) and [`maxRetransmits`](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/maxRetransmits) options. These options can be used to enable an unordered and reliable data channel. There is currently no way to configure an ordered and unreliable stream.
+`Client.connect` optionally takes the RTCDataChannel [`maxPacketLifeTime`](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/maxPacketLifeTime) and [`maxRetransmits`](https://developer.mozilla.org/en-US/docs/Web/API/RTCDataChannel/maxRetransmits) options. These options can be used to enable an unordered and reliable data channel.
 
 ## Known Issues
 
