@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/osofour/web-udp/compare/v3.0.3...v4.0.0) (2020-04-26)
+
+
+### Features
+
+* 🎸 upgrade node-webrtc and switch to yarn ([d2cc4be](https://github.com/osofour/web-udp/commit/d2cc4be7225ecc8e62b65f737760a86f37d73fbc))
+* add port range option ([a9cb607](https://github.com/osofour/web-udp/commit/a9cb607684b2b8e6289696398edc1e7bac082c4b))
+
+
+### BREAKING CHANGES
+
+* 🧨 upgrade of node-webrtc may introduce unexpected breaking changes
+
+
+
+
+
 ## [3.2.4](https://github.com/osofour/web-udp/compare/@web-udp/server@3.2.3...@web-udp/server@3.2.4) (2020-03-30)
 
 **Note:** Version bump only for package @web-udp/server

@@ -1,6 +1,6 @@
 {
   "name": "@web-udp/protocol",
-  "version": "3.9.0",
+  "version": "4.0.0",
   "description": "Protocol library used in establishing connections between @web-udp/client peers",
   "main": "lib/index.js",
   "types": "src/index.ts",

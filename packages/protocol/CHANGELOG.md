@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/osofour/web-udp/compare/v3.0.3...v4.0.0) (2020-04-26)
+
+
+### Bug Fixes
+
+* number -> Timeout in broker ([de49156](https://github.com/osofour/web-udp/commit/de491568edefa067e3495dae1e554d10569c23d2))
+* use NodeJs timeout ([1a32277](https://github.com/osofour/web-udp/commit/1a32277cf303fb6a780fbc18316c77d48789ccd9))
+
+
+### Features
+
+* 🎸 upgrade node-webrtc and switch to yarn ([d2cc4be](https://github.com/osofour/web-udp/commit/d2cc4be7225ecc8e62b65f737760a86f37d73fbc))
+
+
+### BREAKING CHANGES
+
+* 🧨 upgrade of node-webrtc may introduce unexpected breaking changes
+
+
+
+
+
 ## [3.1.3](https://github.com/osofour/web-udp/compare/@web-udp/protocol@3.1.2...@web-udp/protocol@3.1.3) (2019-08-29)
 
 
