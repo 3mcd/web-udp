@@ -1,4 +1,5 @@
 {
+  "private": true,
   "author": "Eric McDaniel <eric.g.mcdaniel@gmail.com>",
   "description": "",
   "devDependencies": {
@@ -49,6 +50,9 @@
     "test": "jest",
     "test-coverage": "jest --verbose --coverage"
   },
-  "version": "1.2.0",
-  "dependencies": {}
+  "version": "4.0.0",
+  "dependencies": {},
+  "workspaces": [
+    "packages/*"
+  ]
 }
