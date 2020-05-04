@@ -3,7 +3,6 @@
   "version": "4.0.1",
   "description": "Node signaling server for the @web-udp/client package",
   "main": "dist/index.js",
-  "types": "src/index.ts",
   "files": [
     "dist"
   ],

@@ -3,7 +3,6 @@
   "version": "4.0.1",
   "description": "Protocol library used in establishing connections between @web-udp/client peers",
   "main": "dist/index.js",
-  "types": "src/index.ts",
   "files": [
     "dist"
   ],
