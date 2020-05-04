@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/osofour/web-udp/compare/v4.0.0...v4.0.1) (2020-05-04)
+
+
+### Bug Fixes
+
+* fix ts definition files ([2753344](https://github.com/osofour/web-udp/commit/27533442af7eb9b7224adf01b6294ff039dbe76a))
+
+
+
+
+
 # [4.0.0](https://github.com/osofour/web-udp/compare/v3.0.3...v4.0.0) (2020-04-26)
 
 
