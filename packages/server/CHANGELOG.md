@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.2](https://github.com/osofour/web-udp/compare/v4.0.1...v4.0.2) (2020-05-04)
+
+
+### Bug Fixes
+
+* remove types field from package.json ([771c2f7](https://github.com/osofour/web-udp/commit/771c2f74be2eb17be63b2ea1702a4a9ec955e634))
+
+
+
+
+
 ## [4.0.1](https://github.com/osofour/web-udp/compare/v4.0.0...v4.0.1) (2020-05-04)
 
 
