@@ -2,10 +2,10 @@ import { Message } from "../../../packages/protocol/src"
 import {
   MessageHandler,
   Transport,
-} from "../../../packages/protocol/lib"
+} from "../../../packages/protocol/dist"
 
 export type TransportMockUtil = {
-  __provide__: (message: Message) => any,
+  __provide__: (message: Message) => any
 }
 
 export default (): Transport & TransportMockUtil => {

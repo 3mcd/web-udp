@@ -1,6 +1,9 @@
-import { Connection, ConnectionState } from "../../../packages/client/src/provider"
+import {
+  Connection,
+  ConnectionState,
+} from "../../../packages/client/src/provider"
 
-import { Signal } from "../../../packages/protocol/lib"
+import { Signal } from "../../../packages/protocol/dist"
 
 export default (): Connection => {
   return {

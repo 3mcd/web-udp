@@ -2,10 +2,13 @@
   "name": "@web-udp/server",
   "version": "4.0.0",
   "description": "Node signaling server for the @web-udp/client package",
-  "main": "lib/index.js",
+  "main": "dist/index.js",
   "types": "src/index.ts",
+  "files": [
+    "lib"
+  ],
   "scripts": {
-    "build": "../../node_modules/.bin/webpack --mode production",
+    "build": "tsc",
     "prepare": "npm run build"
   },
   "author": "Eric.McDaniel <eric.g.mcdaniel@gmail.com>",

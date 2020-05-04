@@ -5,8 +5,12 @@
   "main": "lib/index.js",
   "browser": "dist/index.js",
   "types": "src/index.ts",
+  "files": [
+    "dist",
+    "lib"
+  ],
   "scripts": {
-    "build": "../../node_modules/.bin/webpack --mode production && ../../node_modules/.bin/babel ./src --root-mode upward --out-dir lib --extensions .ts",
+    "build": "webpack --mode=production && tsc --project tsconfig.lib.json",
     "prepare": "npm run build"
   },
   "author": "Eric McDaniel <eric.g.mcdaniel@gmail.com>",

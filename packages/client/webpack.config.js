@@ -17,16 +17,13 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: "babel-loader",
-            options: {
-              rootMode: "upward",
-            },
-          }
+            loader: "ts-loader",
+          },
         ],
       },
     ],
   },
   resolve: {
-    extensions: [".js", ".ts"]
+    extensions: [".js", ".ts"],
   },
 }
