@@ -18,7 +18,7 @@
     "@babel/runtime": "7.4.5",
     "@web-udp/protocol": "^4.0.2",
     "shortid": "2.2.14",
-    "wrtc": "0.4.4",
+    "wrtc": "0.4.5",
     "ws": "7.0.1"
   },
   "devDependencies": {
