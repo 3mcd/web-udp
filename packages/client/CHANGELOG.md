@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/3mcd/web-udp/compare/v4.0.2...v4.1.0) (2020-06-15)
+
+
+### Features
+
+* bump wrtc version to 0.4.5 ([f8d2862](https://github.com/3mcd/web-udp/commit/f8d286285af101b7a1c251fc943422d9d6508315))
+
+
+
+
+
 ## [4.0.2](https://github.com/osofour/web-udp/compare/v4.0.1...v4.0.2) (2020-05-04)
 
 

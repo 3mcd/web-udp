@@ -1,6 +1,6 @@
 {
   "name": "@web-udp/server",
-  "version": "4.0.2",
+  "version": "4.1.0",
   "description": "Node signaling server for the @web-udp/client package",
   "main": "dist/index.js",
   "files": [
@@ -13,7 +13,7 @@
   "author": "Eric.McDaniel <eric.g.mcdaniel@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "@web-udp/client": "^4.0.2",
+    "@web-udp/client": "^4.1.0",
     "@web-udp/protocol": "^4.0.2",
     "shortid": "2.2.14",
     "ws": "7.0.1"
