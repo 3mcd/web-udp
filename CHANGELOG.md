@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/3mcd/web-udp/compare/v4.1.0...v4.2.0) (2021-02-25)
+
+
+### Features
+
+* upgrade wrtc ([929d2be](https://github.com/3mcd/web-udp/commit/929d2be59a911dbd60e265965704116a25db0389))
+
+
+
+
+
 # [4.1.0](https://github.com/3mcd/web-udp/compare/v4.0.2...v4.1.0) (2020-06-15)
 
 
