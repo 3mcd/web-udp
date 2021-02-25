@@ -17,5 +17,6 @@
   },
   "peerDependencies": {
     "wrtc": ">=0.4.7"
-  }
+  },
+  "gitHead": "635411ad75813f438ab12c6645ab17bb60ed87b7"
 }

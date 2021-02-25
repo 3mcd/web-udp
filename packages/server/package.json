@@ -17,5 +17,6 @@
     "@web-udp/protocol": "^4.2.0",
     "shortid": "2.2.14",
     "ws": "7.0.1"
-  }
+  },
+  "gitHead": "635411ad75813f438ab12c6645ab17bb60ed87b7"
 }
