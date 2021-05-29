@@ -19,7 +19,7 @@
     "@web-udp/protocol": "^4.2.1",
     "shortid": "2.2.14",
     "wrtc": "0.4.7",
-    "ws": "7.0.1"
+    "ws": "7.4.6"
   },
   "devDependencies": {
     "webpack": "^4.43.0",
