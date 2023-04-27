@@ -1,6 +1,6 @@
 # web-udp
 
-web-udp is a library used to establish unreliable data channels in Node/browser environments. The key goal of this project to provide a small, stable API that anyone can use to work with real-time data on the web.
+web-udp is a library used to establish unreliable data channels in Node/browser environments. The key goal of this project to provide a small, stable API that anyone can use to work with real-time data on the Web.
 
 The library is currently implemented as an abstraction on top of unordered and unreliable RTCDataChannels. Since WebRTC is a dependency, a WebSocket based signaling server is included with the package to facilitate connections between clients. Client/server connections are available with the help of the [wrtc](https://www.npmjs.com/package/wrtc) package.
 
@@ -86,9 +86,9 @@ server.listen(8000)
 
 ### Metadata
 
-The `metadata` option in `Client.connect` is used to send arbitrary handshake data immediately after establishing a connection. When a new connection is opened, the remote client can access this data on the `metadata` property of the connection object without having to subscribe to the remote client's messages. This data is sent over a secure `RTCDataChannel`, making it a good candidate for sensitive data like passwords.
+The `metadata` option in `Client.connect` is used to send arbitrary handshake data immediately after establishing a connection. When a new connection is established, the remote client can access this data on the `metadata` property of the connection object without having to subscribe to the remote client's messages. Handshake metadata is transmitted over a secure `RTCDataChannel`, making it a good candidate for sensitive data like passwords.
 
-In the below example, a server can handle authentication before subscribing to the client's messages:
+In the below example, a server handles authentication before subscribing to the client's messages:
 
 ```js
 // client.js
@@ -125,7 +125,7 @@ udp.connections.subscribe(connection => {
 
 ### P2P
 
-Of course this library also supports peer-to-peer communication. The below example demonstrates two clients connected to eachother in the same browser tab. The example could be easily adapted to two machines, but the users' identities would have to be exchanged at the application level since web-udp doesn't doesn't provide rooms or peer brokering out of the box.
+`web-udp` also supports peer-to-peer communication. The below example demonstrates two clients connected in the same browser tab:
 
 ```html
 <!-- index.html -->
@@ -168,11 +168,11 @@ server.listen(8000)
 
 ## Known Issues
 
-WebSockets are used as the signaling transport via the [`ws`](https://www.npmjs.com/package/ws) package. Due to a current issue in the wrtc library, this socket is kept open after the DataChannel is established to forward it's close event (e.g. when a browser tab is closed) in order to terminate hanging UDP connections. A keepalive signal is sent periodically to keep the socket open in the case of hosts with connection timeouts. The period at which the keepalive signal is sent can be configured via the server's `keepAlivePeriod` option.
+WebSockets are used as the signaling transport. This socket is kept open after the DataChannel is established to forward it's close event (e.g. when a browser tab is closed) in order to terminate hanging `web-udp` connections. A keepalive signal is sent periodically to keep the socket open in the case of hosts with connection timeouts. The period at which the keepalive signal is sent can be configured via the server's `keepAlivePeriod` option.
 
 ## License
 
-Copyright 2018 Eric McDaniel
+Copyright 2023 Eric McDaniel
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
